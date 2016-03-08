@@ -26,45 +26,31 @@ package com.github.piotrkot.mustache;
 import java.util.Map;
 
 /**
- * Template.
+ * Mustache template.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public interface Template extends Tag, Location {
-    /**
-     * Supply template with pairs which replace template tags.
-     * @param pairs Pairs.
-     * @return Tags replaced in template according to Mustache specs.
-     *  @see <a href="https://mustache.github.io/">https://mustache.github.io/</a>
-     */
-    String supply(Map<String, Object> pairs);
-}
+public abstract class Mustache implements Template {
 
-/**
- * Tag which gets replaced in template.
- */
-interface Tag {
-    /**
-     * String that starts the tag.
-     * @return Code string.
-     */
-    String start();
-    /**
-     * String that ends the tag.
-     * @return Code string.
-     */
-    String end();
-}
+    private final String tmplt;
 
-/**
- * Location of templates and partials.
- */
-interface Location {
-    /**
-     * Location path.
-     * @return Path string.
-     */
-    String path();
+    public Mustache(final String template) {
+        tmplt = template;
+    }
+
+    @Override
+    public String supply(Map<String, Object> pairs) {
+        return null;
+    }
+
+    @Override
+    public abstract String path();
+
+    @Override
+    public abstract String start();
+
+    @Override
+    public abstract String end();
 }
