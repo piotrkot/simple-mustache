@@ -21,36 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.piotrkot.mustache;
+package com.github.piotrkot.mustache.tags;
 
+import com.github.piotrkot.mustache.Tag;
 import java.util.Map;
 
 /**
- * Mustache template.
- *
+ * Variable template tag. Basic string replacement.
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public abstract class Mustache implements Template {
-
-    private final String tmplt;
-
-    public Mustache(final String template) {
-        tmplt = template;
+public final class Variable implements Tag {
+    @Override
+    public String render(final String template, final Map<String, Object> pairs) {
+        throw new UnsupportedOperationException("#render()");
     }
-
-    @Override
-    public String supply(final Map<String, Object> pairs) {
-        return null;
-    }
-
-    @Override
-    public abstract String path();
-
-    @Override
-    public abstract String start();
-
-    @Override
-    public abstract String end();
 }

@@ -32,7 +32,7 @@ import java.util.Map;
  * @version $Id$
  * @since 1.0
  */
-public interface Template extends Tag, Location {
+public interface Template extends TagIndicator, Location {
     /**
      * Supply template with pairs which replace template tags.
      * @param pairs Pairs.
@@ -43,9 +43,9 @@ public interface Template extends Tag, Location {
 }
 
 /**
- * Tag which gets replaced in template.
+ * Tag indicator which recognizes tags.
  */
-interface Tag {
+interface TagIndicator {
     /**
      * String that starts the tag.
      * @return Code string.

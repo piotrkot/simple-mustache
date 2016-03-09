@@ -26,31 +26,17 @@ package com.github.piotrkot.mustache;
 import java.util.Map;
 
 /**
- * Mustache template.
- *
+ * Text tag.
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public abstract class Mustache implements Template {
-
-    private final String tmplt;
-
-    public Mustache(final String template) {
-        tmplt = template;
-    }
-
-    @Override
-    public String supply(final Map<String, Object> pairs) {
-        return null;
-    }
-
-    @Override
-    public abstract String path();
-
-    @Override
-    public abstract String start();
-
-    @Override
-    public abstract String end();
+public interface Tag {
+    /**
+     * Renders content based on template and variables.
+     * @param template Template content.
+     * @param pairs Variables.
+     * @return New content.
+     */
+    String render(String template, Map<String, Object> pairs);
 }

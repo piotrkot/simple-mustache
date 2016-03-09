@@ -21,36 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.piotrkot.mustache;
-
-import java.util.Map;
-
 /**
- * Mustache template.
+ * Implementation of Tag types.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public abstract class Mustache implements Template {
-
-    private final String tmplt;
-
-    public Mustache(final String template) {
-        tmplt = template;
-    }
-
-    @Override
-    public String supply(final Map<String, Object> pairs) {
-        return null;
-    }
-
-    @Override
-    public abstract String path();
-
-    @Override
-    public abstract String start();
-
-    @Override
-    public abstract String end();
-}
+package com.github.piotrkot.mustache.tags;
