@@ -21,28 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.piotrkot.mustache.tags;
-
-import com.github.piotrkot.mustache.Tag;
-import com.github.piotrkot.mustache.TagIndicate;
-import java.util.Map;
+package com.github.piotrkot.mustache;
 
 /**
- * Partial tag type. Renders text at runtime based on file injection. Recursion
- * is possible so avoid infinite loops.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
- * @since 1.0
+ * Tag indicate.
  */
-public final class Partial implements Tag {
-    private final TagIndicate indct;
-
-    public Partial(final TagIndicate indicate) {
-        this.indct = indicate;
-    }
-
-    @Override
-    public String render(final String template, final Map<String, Object> pairs) {
-        return "";
-    }
+public interface TagIndicate {
+    /**
+     * String that starts the tag.
+     * @return Code string.
+     */
+    String start();
+    /**
+     * String that ends the tag.
+     * @return Code string.
+     */
+    String end();
 }

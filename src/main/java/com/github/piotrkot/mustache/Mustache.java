@@ -23,6 +23,11 @@
  */
 package com.github.piotrkot.mustache;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Map;
 
 /**
@@ -33,11 +38,26 @@ import java.util.Map;
  * @since 1.0
  */
 public abstract class Mustache implements Template {
+    /**
+     * Template stream.
+     */
+    private final transient InputStream strm;
+    /**
+     * Path where partials can be found.
+     */
+    private final transient String pth;
 
-    private final String tmplt;
+    public Mustache(final String content, final Path directory) {
+        this(new ByteArrayInputStream(content.getBytes()), directory);
+    }
 
-    public Mustache(final String template) {
-        tmplt = template;
+    public Mustache(final Path path) throws FileNotFoundException {
+        this(new FileInputStream(path.toFile()), path.getParent());
+    }
+
+    public Mustache(final InputStream stream, final Path directory) {
+        this.strm = stream;
+        this.pth = directory.toString();
     }
 
     @Override
@@ -46,7 +66,9 @@ public abstract class Mustache implements Template {
     }
 
     @Override
-    public abstract String path();
+    public String path() {
+        return this.pth;
+    }
 
     @Override
     public abstract String start();

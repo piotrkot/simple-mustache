@@ -32,7 +32,7 @@ import java.util.Map;
  * @version $Id$
  * @since 1.0
  */
-public interface Template extends TagIndicator, Location {
+public interface Template extends TagIndicate, Location {
     /**
      * Supply template with pairs which replace template tags.
      * @param pairs Pairs.
@@ -40,31 +40,4 @@ public interface Template extends TagIndicator, Location {
      *  @see <a href="https://mustache.github.io/">https://mustache.github.io/</a>
      */
     String supply(Map<String, Object> pairs);
-}
-
-/**
- * Tag indicator which recognizes tags.
- */
-interface TagIndicator {
-    /**
-     * String that starts the tag.
-     * @return Code string.
-     */
-    String start();
-    /**
-     * String that ends the tag.
-     * @return Code string.
-     */
-    String end();
-}
-
-/**
- * Location of templates and partials.
- */
-interface Location {
-    /**
-     * Location path.
-     * @return Path string.
-     */
-    String path();
 }
