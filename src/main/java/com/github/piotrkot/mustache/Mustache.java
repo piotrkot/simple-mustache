@@ -23,12 +23,19 @@
  */
 package com.github.piotrkot.mustache;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import com.github.piotrkot.mustache.tags.InvSection;
+import com.github.piotrkot.mustache.tags.Partial;
+import com.github.piotrkot.mustache.tags.Section;
+import com.github.piotrkot.mustache.tags.Variable;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Mustache template.
@@ -39,29 +46,55 @@ import java.util.Map;
  */
 public abstract class Mustache implements Template {
     /**
-     * Template stream.
+     * Template content.
      */
-    private final transient InputStream strm;
+    private final transient String str;
     /**
      * Path where partials can be found.
      */
     private final transient String pth;
 
+    private final Collection<Tag> tags = Arrays.asList(
+        new Partial(this),
+        new Section(),
+        new InvSection(),
+        new Variable()
+    );
+
+    public Mustache(final InputStream stream) throws IOException {
+        this(stream, Paths.get("."));
+    }
+
+    public Mustache(final InputStream stream, final Path directory) throws IOException {
+        this(Mustache.stringed(stream), directory);
+    }
+
+    public Mustache(final Path path) throws IOException {
+        this(path, path.getParent());
+    }
+
+    public Mustache(final Path path, final Path directory) throws IOException {
+        this(
+            Files.lines(path, StandardCharsets.UTF_8)
+                .reduce("", String::concat),
+            directory
+        );
+    }
+
+    public Mustache(final String content) {
+        this(content, Paths.get("."));
+    }
+
     public Mustache(final String content, final Path directory) {
-        this(new ByteArrayInputStream(content.getBytes()), directory);
-    }
-
-    public Mustache(final Path path) throws FileNotFoundException {
-        this(new FileInputStream(path.toFile()), path.getParent());
-    }
-
-    public Mustache(final InputStream stream, final Path directory) {
-        this.strm = stream;
+        this.str = content;
         this.pth = directory.toString();
     }
 
     @Override
     public String supply(final Map<String, Object> pairs) {
+        for (final Tag tag : this.tags) {
+            tag.render(this.str, pairs);
+        }
         return null;
     }
 
@@ -75,4 +108,16 @@ public abstract class Mustache implements Template {
 
     @Override
     public abstract String end();
+
+    private static String stringed(final InputStream stream) throws IOException {
+        final BufferedReader buff = new BufferedReader(
+                new InputStreamReader(stream, StandardCharsets.UTF_8)
+        );
+        String str = null;
+        final StringBuilder bld = new StringBuilder(1024);
+        while ((str = buff.readLine()) != null) {
+            bld.append(str);
+        }
+        return bld.toString();
+    }
 }

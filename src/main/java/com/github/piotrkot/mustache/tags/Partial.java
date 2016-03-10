@@ -25,7 +25,11 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
+
+import java.io.InputStream;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Partial tag type. Renders text at runtime based on file injection. Recursion
@@ -43,6 +47,17 @@ public final class Partial implements Tag {
 
     @Override
     public String render(final String template, final Map<String, Object> pairs) {
-        return "";
+        StringBuilder out = new StringBuilder();
+        Scanner scan = new Scanner(template);
+        final Pattern patt = this.pattern();
+        while (scan.hasNext(patt)) {
+            scan.next(patt);
+            scan.match();
+        }
+        return out.toString();
+    }
+
+    private Pattern pattern() {
+        return Pattern.compile(this.indct.start() + "" + this.indct.end());
     }
 }
