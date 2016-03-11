@@ -23,7 +23,7 @@ public class PartialTest {
     @Test
     public void shouldRenderWithPartial() throws Exception {
         Assert.assertEquals(
-            "head\nbody",
+            "body1\nhead1\nhead2\nbody2",
             new Partial(
                 new TagIndicate() {
                     @Override
@@ -35,7 +35,7 @@ public class PartialTest {
                         return Pattern.quote("]]");
                     }
                 },
-                this.getClass().getResource("/").toString()
+                this.getClass().getResource("/").getPath()
             ).render(
                 new FileStream(
                     this.getClass().getResourceAsStream("/prtl-test.mustache")

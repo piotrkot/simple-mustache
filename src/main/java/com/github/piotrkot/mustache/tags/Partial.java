@@ -25,7 +25,6 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -88,11 +87,14 @@ public final class Partial implements Tag {
                 )
             );
             try {
-                final File f = file.toFile();
                 result.append(
-                    Files.lines(file, StandardCharsets.UTF_8)
-                        .reduce("", String::concat)
+                    Files.lines(file, StandardCharsets.UTF_8).reduce(
+                        "",
+                        (pre, post) -> String
+                            .join(System.lineSeparator(), pre, post)
+                    )
                 );
+                result.append(System.lineSeparator());
             } catch (final IOException ex) {
                 log.info("File {} not found", file.toString());
             }
