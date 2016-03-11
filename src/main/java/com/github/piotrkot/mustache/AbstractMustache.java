@@ -52,10 +52,6 @@ public abstract class AbstractMustache implements Template {
      */
     private final transient String str;
     /**
-     * Path where partials can be found.
-     */
-    private final transient String pth;
-    /**
      * Mustache tags.
      */
     private final Collection<Tag> tags;
@@ -119,9 +115,8 @@ public abstract class AbstractMustache implements Template {
      */
     public AbstractMustache(final String content, final Path directory) {
         this.str = content;
-        this.pth = directory.toString();
         this.tags = Arrays.asList(
-            new Partial(this),
+            new Partial(this, directory.toString()),
             new Section(),
             new InvSection(),
             new Variable()
@@ -130,15 +125,11 @@ public abstract class AbstractMustache implements Template {
 
     @Override
     public final String supply(final Map<String, Object> pairs) {
+        String rendered = this.str;
         for (final Tag tag : this.tags) {
-            tag.render(this.str, pairs);
+            rendered = tag.render(rendered, pairs);
         }
-        return null;
-    }
-
-    @Override
-    public final String path() {
-        return this.pth;
+        return rendered;
     }
 
     @Override

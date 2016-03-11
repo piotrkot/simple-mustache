@@ -25,10 +25,15 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Partial tag type. Renders text at runtime based on file injection. Recursion
@@ -38,17 +43,25 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 1.0
  */
+@Slf4j
 public final class Partial implements Tag {
     /**
      * Indicate.
      */
     private final transient TagIndicate indct;
     /**
-     * Constructor.
-     * @param indicate Indicate.
+     * Path for partials.
      */
-    public Partial(final TagIndicate indicate) {
+    private final String path;
+    /**
+     * Constructor.
+     *
+     * @param indicate Indicate.
+     * @param directory Path for partials.
+     */
+    public Partial(final TagIndicate indicate, final String directory) {
         this.indct = indicate;
+        this.path = directory;
     }
 
     @Override
@@ -56,17 +69,30 @@ public final class Partial implements Tag {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = Pattern.compile(
-            new StringJoiner(
+            String.join(
+                "",
                 this.indct.start(),
                 "\\s+>\\s+(\\S+)\\s+",
                 this.indct.end()
-            ).toString()
+            )
         ).matcher(tmpl);
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
-            final String file = matcher.group(1);
-            if (pairs.containsKey(file)) {
-                result.append(file);
+            final Path file = Paths.get(
+                this.path,
+                String.join(
+                    ".",
+                    matcher.group(),
+                    "mustache"
+                )
+            );
+            try {
+                result.append(
+                    Files.lines(file, StandardCharsets.UTF_8)
+                        .reduce("", String::concat)
+                );
+            } catch (final IOException ex) {
+                log.info("File {} not found", file.toString());
             }
             start = matcher.end();
         }
