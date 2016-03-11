@@ -27,15 +27,17 @@ import com.github.piotrkot.mustache.tags.InvSection;
 import com.github.piotrkot.mustache.tags.Partial;
 import com.github.piotrkot.mustache.tags.Section;
 import com.github.piotrkot.mustache.tags.Variable;
-
-import java.io.*;
-import java.nio.charset.Charset;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Mustache template.
@@ -44,7 +46,7 @@ import java.util.stream.Collectors;
  * @version $Id$
  * @since 1.0
  */
-public abstract class Mustache implements Template {
+public abstract class AbstractMustache implements Template {
     /**
      * Template content.
      */
@@ -53,45 +55,81 @@ public abstract class Mustache implements Template {
      * Path where partials can be found.
      */
     private final transient String pth;
-
-    private final Collection<Tag> tags = Arrays.asList(
-        new Partial(this),
-        new Section(),
-        new InvSection(),
-        new Variable()
-    );
-
-    public Mustache(final InputStream stream) throws IOException {
-        this(stream, Paths.get("."));
+    /**
+     * Mustache tags.
+     */
+    private final Collection<Tag> tags;
+    /**
+     * Constructor.
+     *
+     * @param stream Template stream.
+     * @throws IOException When fails.
+     */
+    public AbstractMustache(final InputStream stream) throws IOException {
+        this(AbstractMustache.stringed(stream));
     }
-
-    public Mustache(final InputStream stream, final Path directory) throws IOException {
-        this(Mustache.stringed(stream), directory);
+    /**
+     * Constructor.
+     *
+     * @param stream Template stream.
+     * @param directory Partial path.
+     * @throws IOException When fails.
+     */
+    public AbstractMustache(final InputStream stream, final Path directory)
+        throws IOException {
+        this(AbstractMustache.stringed(stream), directory);
     }
-
-    public Mustache(final Path path) throws IOException {
+    /**
+     * Constructor.
+     *
+     * @param path Template path.
+     * @throws IOException When fails.
+     */
+    public AbstractMustache(final Path path) throws IOException {
         this(path, path.getParent());
     }
-
-    public Mustache(final Path path, final Path directory) throws IOException {
+    /**
+     * Constructor.
+     *
+     * @param path Template path.
+     * @param directory Partial path.
+     * @throws IOException When fails.
+     */
+    public AbstractMustache(final Path path, final Path directory)
+        throws IOException {
         this(
             Files.lines(path, StandardCharsets.UTF_8)
                 .reduce("", String::concat),
             directory
         );
     }
-
-    public Mustache(final String content) {
+    /**
+     * Constructor.
+     *
+     * @param content Template content.
+     */
+    public AbstractMustache(final String content) {
         this(content, Paths.get("."));
     }
-
-    public Mustache(final String content, final Path directory) {
+    /**
+     * Constructor.
+     *
+     * @param content Template content.
+     * @param directory Partial path.
+     */
+    public AbstractMustache(final String content, final Path directory) {
         this.str = content;
         this.pth = directory.toString();
+        this.tags = Arrays.asList(
+            new Partial(this),
+            new Section(),
+            new InvSection(),
+            new Variable()
+        );
     }
 
     @Override
-    public String supply(final Map<String, Object> pairs) {
+    public final String supply(final Map<String, Object> pairs) {
         for (final Tag tag : this.tags) {
             tag.render(this.str, pairs);
         }
@@ -99,7 +137,7 @@ public abstract class Mustache implements Template {
     }
 
     @Override
-    public String path() {
+    public final String path() {
         return this.pth;
     }
 
@@ -108,15 +146,23 @@ public abstract class Mustache implements Template {
 
     @Override
     public abstract String end();
-
-    private static String stringed(final InputStream stream) throws IOException {
+    /**
+     * Stream to String conversion.
+     *
+     * @param stream Stream.
+     * @return String representation.
+     * @throws IOException When fails.
+     */
+    private static String stringed(final InputStream stream)
+        throws IOException {
         final BufferedReader buff = new BufferedReader(
-                new InputStreamReader(stream, StandardCharsets.UTF_8)
+            new InputStreamReader(stream, StandardCharsets.UTF_8)
         );
-        String str = null;
         final StringBuilder bld = new StringBuilder(1024);
-        while ((str = buff.readLine()) != null) {
+        String str = buff.readLine();
+        while (str != null) {
             bld.append(str);
+            str = buff.readLine();
         }
         return bld.toString();
     }

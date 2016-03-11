@@ -27,6 +27,7 @@ import java.util.Map;
 
 /**
  * Text tag.
+ *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
@@ -34,6 +35,7 @@ import java.util.Map;
 public interface Tag {
     /**
      * Renders content based on template and variables.
+     *
      * @param template Template content.
      * @param pairs Variables.
      * @return New content.

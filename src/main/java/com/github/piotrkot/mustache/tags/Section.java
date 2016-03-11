@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class Section implements Tag {
     @Override
-    public String render(final String template, final Map<String, Object> pairs) {
+    public String render(final String tmpl, final Map<String, Object> pairs) {
         throw new UnsupportedOperationException("#render()");
     }
 }

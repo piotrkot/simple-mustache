@@ -25,39 +25,52 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
-
-import java.io.InputStream;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.StringJoiner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Partial tag type. Renders text at runtime based on file injection. Recursion
  * is possible so avoid infinite loops.
+ *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
 public final class Partial implements Tag {
-    private final TagIndicate indct;
-
+    /**
+     * Indicate.
+     */
+    private final transient TagIndicate indct;
+    /**
+     * Constructor.
+     * @param indicate Indicate.
+     */
     public Partial(final TagIndicate indicate) {
         this.indct = indicate;
     }
 
     @Override
-    public String render(final String template, final Map<String, Object> pairs) {
-        StringBuilder out = new StringBuilder();
-        Scanner scan = new Scanner(template);
-        final Pattern patt = this.pattern();
-        while (scan.hasNext(patt)) {
-            scan.next(patt);
-            scan.match();
+    public String render(final String tmpl, final Map<String, Object> pairs) {
+        final StringBuilder result = new StringBuilder();
+        int start = 0;
+        final Matcher matcher = Pattern.compile(
+            new StringJoiner(
+                this.indct.start(),
+                "\\s+>\\s+(\\S+)\\s+",
+                this.indct.end()
+            ).toString()
+        ).matcher(tmpl);
+        while (matcher.find()) {
+            result.append(tmpl.substring(start, matcher.start()));
+            final String file = matcher.group(1);
+            if (pairs.containsKey(file)) {
+                result.append(file);
+            }
+            start = matcher.end();
         }
-        return out.toString();
-    }
-
-    private Pattern pattern() {
-        return Pattern.compile(this.indct.start() + "" + this.indct.end());
+        result.append(tmpl.substring(start, tmpl.length()));
+        return result.toString();
     }
 }

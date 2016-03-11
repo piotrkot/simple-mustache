@@ -25,10 +25,15 @@ package com.github.piotrkot.mustache;
 
 /**
  * Location of templates and partials.
+ *
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
+ * @version $Id$
+ * @since 1.0
  */
 public interface Location {
     /**
      * Location path.
+     *
      * @return Path string.
      */
     String path();
