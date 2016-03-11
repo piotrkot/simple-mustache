@@ -27,10 +27,8 @@ import com.github.piotrkot.mustache.tags.InvSection;
 import com.github.piotrkot.mustache.tags.Partial;
 import com.github.piotrkot.mustache.tags.Section;
 import com.github.piotrkot.mustache.tags.Variable;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,7 +60,7 @@ public abstract class AbstractMustache implements Template {
      * @throws IOException When fails.
      */
     public AbstractMustache(final InputStream stream) throws IOException {
-        this(AbstractMustache.stringed(stream));
+        this(new FileStream(stream).asString());
     }
     /**
      * Constructor.
@@ -73,7 +71,7 @@ public abstract class AbstractMustache implements Template {
      */
     public AbstractMustache(final InputStream stream, final Path directory)
         throws IOException {
-        this(AbstractMustache.stringed(stream), directory);
+        this(new FileStream(stream).asString(), directory);
     }
     /**
      * Constructor.
@@ -105,7 +103,7 @@ public abstract class AbstractMustache implements Template {
      * @param content Template content.
      */
     public AbstractMustache(final String content) {
-        this(content, Paths.get("."));
+        this(content, Paths.get(""));
     }
     /**
      * Constructor.
@@ -137,24 +135,4 @@ public abstract class AbstractMustache implements Template {
 
     @Override
     public abstract String end();
-    /**
-     * Stream to String conversion.
-     *
-     * @param stream Stream.
-     * @return String representation.
-     * @throws IOException When fails.
-     */
-    private static String stringed(final InputStream stream)
-        throws IOException {
-        final BufferedReader buff = new BufferedReader(
-            new InputStreamReader(stream, StandardCharsets.UTF_8)
-        );
-        final StringBuilder bld = new StringBuilder(1024);
-        String str = buff.readLine();
-        while (str != null) {
-            bld.append(str);
-            str = buff.readLine();
-        }
-        return bld.toString();
-    }
 }

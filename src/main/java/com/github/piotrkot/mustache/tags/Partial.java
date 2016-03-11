@@ -25,6 +25,7 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -72,7 +73,7 @@ public final class Partial implements Tag {
             String.join(
                 "",
                 this.indct.start(),
-                "\\s+>\\s+(\\S+)\\s+",
+                "\\s*>\\s*([^\\s]+)\\s*",
                 this.indct.end()
             )
         ).matcher(tmpl);
@@ -82,11 +83,12 @@ public final class Partial implements Tag {
                 this.path,
                 String.join(
                     ".",
-                    matcher.group(),
+                    matcher.group(1),
                     "mustache"
                 )
             );
             try {
+                final File f = file.toFile();
                 result.append(
                     Files.lines(file, StandardCharsets.UTF_8)
                         .reduce("", String::concat)
