@@ -44,4 +44,35 @@ public class PartialTest {
             )
         );
     }
+
+    /**
+     * Should render partial in partial.
+     *
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldRenderWithPartialInPartial() throws Exception {
+        Assert.assertEquals(
+            "body1\nhead1-2\nhead2-2\nhead1\nhead2\nbody2",
+            new Partial(
+                new TagIndicate() {
+                    @Override
+                    public String start() {
+                        return Pattern.quote("[[");
+                    }
+                    @Override
+                    public String end() {
+                        return Pattern.quote("]]");
+                    }
+                },
+                this.getClass().getResource("/").getPath()
+            ).render(
+                new FileStream(
+                    this.getClass().getResourceAsStream("/prtl2-test.mustache")
+                ).asString(),
+                Collections.emptyMap()
+            )
+        );
+    }
+
 }
