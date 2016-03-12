@@ -65,7 +65,7 @@ public final class Section implements Tag {
             result.append(tmpl.substring(start, matcher.start()));
             final String name = matcher.group(1);
             if (pairs.containsKey(name)) {
-                if (pairs.get(name).equals("true")) {
+                if (pairs.get(name).toString().equals("true")) {
                     result.append(matcher.group(2));
                 } else if (pairs.get(name) instanceof List) {
                     for (Object ignored : (List)pairs.get(name)) {
