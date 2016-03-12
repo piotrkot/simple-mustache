@@ -69,10 +69,9 @@ public final class Partial implements Tag {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = Pattern.compile(
-            String.join(
-                "",
+            String.format(
+                "%s\\s*>\\s*([^\\s]+)\\s*%s",
                 this.indct.safeStart(),
-                "\\s*>\\s*([^\\s]+)\\s*",
                 this.indct.safeEnd()
             )
         ).matcher(tmpl);
