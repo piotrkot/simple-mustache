@@ -79,6 +79,31 @@ public final class SectionTest {
     }
 
     /**
+     * Should render section with subsection.
+     * @throws Exception If fails.
+     * @checkstyle MultipleStringLiterals (13 lines)
+     */
+    @Test
+    public void shouldRenderSectionWithSubsection() throws Exception {
+        MatcherAssert.assertThat(
+            new Section(new SquareIndicate()).render(
+                "1 [[#o]]-X [[q]][[#i]]Y [[w]][[/i]][[/o]]",
+                ImmutableMap.of(
+                    "o", ImmutableList.of(
+                        ImmutableMap.of("q", "Q1"),
+                        ImmutableMap.of("q", "Q2")
+                    ),
+                    "i", ImmutableList.of(
+                        ImmutableMap.of("w", "W1"),
+                        ImmutableMap.of("w", "W2")
+                    )
+                )
+            ),
+            Matchers.is("1 -X Q1Y W1Y W2-X Q2Y W1Y W2")
+        );
+    }
+
+    /**
      * Tag indicate with double square parentheses.
      */
     private class SquareIndicate implements TagIndicate {
