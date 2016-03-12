@@ -118,7 +118,7 @@ public abstract class AbstractMustache implements Template {
             new Partial(this, directory.toString()),
             new Section(),
             new InvSection(),
-            new Variable()
+            new Variable(this)
         );
     }
 

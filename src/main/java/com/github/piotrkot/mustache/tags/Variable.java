@@ -24,7 +24,10 @@
 package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
+import com.github.piotrkot.mustache.TagIndicate;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Variable template tag. Basic string replacement.
@@ -33,8 +36,40 @@ import java.util.Map;
  * @since 1.0
  */
 public final class Variable implements Tag {
+    /**
+     * Indicate.
+     */
+    private final transient TagIndicate indct;
+    /**
+     * Constructor.
+     *
+     * @param indicate Indicate.
+     */
+    public Variable(final TagIndicate indicate) {
+        this.indct = indicate;
+    }
+
     @Override
     public String render(final String tmpl, final Map<String, Object> pairs) {
-        throw new UnsupportedOperationException("#render()");
+        final StringBuilder result = new StringBuilder();
+        int start = 0;
+        final Matcher matcher = Pattern.compile(
+            String.join(
+                "",
+                this.indct.safeStart(),
+                "\\s*([^\\s>/#\\^]+)\\s*",
+                this.indct.safeEnd()
+            )
+        ).matcher(tmpl);
+        while (matcher.find()) {
+            result.append(tmpl.substring(start, matcher.start()));
+            final String name = matcher.group(1);
+            if (pairs.containsKey(name)) {
+                result.append(pairs.get(name));
+            }
+            start = matcher.end();
+        }
+        result.append(tmpl.substring(start, tmpl.length()));
+        return result.toString();
     }
 }
