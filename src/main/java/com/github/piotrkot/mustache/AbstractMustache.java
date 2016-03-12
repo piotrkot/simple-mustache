@@ -36,6 +36,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Mustache template.
@@ -131,8 +132,24 @@ public abstract class AbstractMustache implements Template {
     }
 
     @Override
-    public abstract String start();
+    public String safeStart() {
+        return Pattern.quote(this.start());
+    }
 
     @Override
+    public String safeEnd() {
+        return Pattern.quote(this.end());
+    }
+
+    /**
+     * String that starts the tag.
+     * @return Code string.
+     */
+    public abstract String start();
+
+    /**
+     * String that ends the tag.
+     * @return Code string.
+     */
     public abstract String end();
 }

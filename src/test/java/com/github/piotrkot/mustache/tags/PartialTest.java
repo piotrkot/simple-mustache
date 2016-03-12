@@ -27,11 +27,11 @@ public class PartialTest {
             new Partial(
                 new TagIndicate() {
                     @Override
-                    public String start() {
+                    public String safeStart() {
                         return Pattern.quote("[[");
                     }
                     @Override
-                    public String end() {
+                    public String safeEnd() {
                         return Pattern.quote("]]");
                     }
                 },
@@ -57,11 +57,11 @@ public class PartialTest {
             new Partial(
                 new TagIndicate() {
                     @Override
-                    public String start() {
+                    public String safeStart() {
                         return Pattern.quote("[[");
                     }
                     @Override
-                    public String end() {
+                    public String safeEnd() {
                         return Pattern.quote("]]");
                     }
                 },

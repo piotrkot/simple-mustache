@@ -32,13 +32,15 @@ package com.github.piotrkot.mustache;
  */
 public interface TagIndicate {
     /**
-     * String that starts the tag.
+     * Regex safe string that starts the tag.
      * @return Code string.
+     * @see java.util.regex.Pattern#quote(String)
      */
-    String start();
+    String safeStart();
     /**
-     * String that ends the tag.
+     * Regex safe string that ends the tag.
      * @return Code string.
+     * @see java.util.regex.Pattern#quote(String)
      */
-    String end();
+    String safeEnd();
 }
