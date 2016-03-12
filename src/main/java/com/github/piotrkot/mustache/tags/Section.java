@@ -25,6 +25,7 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +56,7 @@ public final class Section implements Tag {
         int start = 0;
         final Matcher matcher = Pattern.compile(
             String.format(
-                "%1$s\\s*#\\s*([^\\s]+)\\s*%2$s(.+)%1$s\\s*/\\s*([^\\s]+)\\s*%2$s",
+                "%1$s\\s*#\\s*([^\\s]+)\\s*%2$s(.+)%1$s\\s*/\\s*(\\1)\\s*%2$s",
                 this.indct.safeStart(),
                 this.indct.safeEnd()
             )
@@ -64,7 +65,13 @@ public final class Section implements Tag {
             result.append(tmpl.substring(start, matcher.start()));
             final String name = matcher.group(1);
             if (pairs.containsKey(name)) {
-                result.append(pairs.get(name));
+                if (pairs.get(name).equals("true")) {
+                    result.append(matcher.group(2));
+                } else if (pairs.get(name) instanceof List) {
+                    for (Object ignored : (List)pairs.get(name)) {
+                        result.append(matcher.group(2));
+                    }
+                }
             }
             start = matcher.end();
         }
