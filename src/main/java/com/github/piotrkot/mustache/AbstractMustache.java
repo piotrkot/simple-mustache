@@ -132,12 +132,12 @@ public abstract class AbstractMustache implements Template {
     }
 
     @Override
-    public String safeStart() {
+    public final String safeStart() {
         return Pattern.quote(this.start());
     }
 
     @Override
-    public String safeEnd() {
+    public final String safeEnd() {
         return Pattern.quote(this.end());
     }
 

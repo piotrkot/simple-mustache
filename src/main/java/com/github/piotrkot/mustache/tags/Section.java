@@ -42,12 +42,17 @@ public final class Section implements Tag {
      */
     private final transient TagIndicate indct;
     /**
+     * Variable tag.
+     */
+    private final Tag vrble;
+
+    /**
      * Constructor.
-     *
      * @param indicate Indicate.
      */
     public Section(final TagIndicate indicate) {
         this.indct = indicate;
+        this.vrble = new Variable(indicate);
     }
 
     @Override
@@ -64,12 +69,18 @@ public final class Section implements Tag {
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
             final String name = matcher.group(1);
-            if (pairs.containsKey(name)) {
-                if (pairs.get(name).toString().equals("true")) {
-                    result.append(matcher.group(2));
-                } else if (pairs.get(name) instanceof List) {
-                    for (Object ignored : (List)pairs.get(name)) {
-                        result.append(matcher.group(2));
+            final Object pair = pairs.get(name);
+            final String value = matcher.group(2);
+            if (pairs.containsKey(name) && pair.toString().equals("true")) {
+                result.append(value);
+            } else if (pairs.containsKey(name) && pair instanceof List) {
+                for (final Object elem : (List) pair) {
+                    if (elem instanceof Map) {
+                        result.append(
+                            this.vrble.render(value, (Map) elem)
+                        );
+                    } else {
+                        result.append(value);
                     }
                 }
             }

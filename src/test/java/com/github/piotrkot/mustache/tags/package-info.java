@@ -21,52 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.piotrkot.mustache.tags;
-
-import com.github.piotrkot.mustache.TagIndicate;
-import com.google.common.collect.ImmutableMap;
-import java.util.regex.Pattern;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
 /**
- * Tests for Variable.
+ * Tests for Mustache tags.
+ *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class VariableTest {
-
-    /**
-     * Should render variable.
-     * @throws Exception If fails.
-     */
-    @Test
-    public void shouldRenderVariable() throws Exception {
-        MatcherAssert.assertThat(
-            new Variable(
-                new SquareIndicate()
-            ).render(
-                "1 [[2]] [[3]] [[4]] [[5]] [[>6]] [[#7]] [[/8]] [[^9]]",
-                ImmutableMap.of("2", 2, "3", "three", "4", "[[four]]")
-            ),
-            Matchers.is("1 2 three [[four]]  [[>6]] [[#7]] [[/8]] [[^9]]")
-        );
-    }
-
-    /**
-     * Tag indicate with double square parentheses.
-     */
-    private class SquareIndicate implements TagIndicate {
-        @Override
-        public String safeStart() {
-            return Pattern.quote("[[");
-        }
-
-        @Override
-        public String safeEnd() {
-            return Pattern.quote("]]");
-        }
-    }
-}
+package com.github.piotrkot.mustache.tags;
