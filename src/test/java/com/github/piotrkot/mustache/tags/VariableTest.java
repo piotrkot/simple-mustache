@@ -56,6 +56,25 @@ public final class VariableTest {
     }
 
     /**
+     * Should not render variable inside section.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldNotRenderVariableInside() throws Exception {
+        MatcherAssert.assertThat(
+            new Variable(
+                new SquareIndicate()
+            ).render(
+                "[[#2]][[3]][[/2]] [[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]",
+                ImmutableMap.of("3", "A", "5", "B", "6", "C")
+            ),
+            Matchers.is(
+                "[[#2]][[3]][[/2]] [[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]"
+            )
+        );
+    }
+
+    /**
      * Tag indicate with double square parentheses.
      */
     private class SquareIndicate implements TagIndicate {
