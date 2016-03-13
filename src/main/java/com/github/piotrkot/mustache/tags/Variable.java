@@ -48,7 +48,7 @@ public final class Variable implements Tag {
     public Variable(final TagIndicate indicate) {
         this.patt = Pattern.compile(
             String.format(
-                "%1$s(?<var>[^\\s>/#\\^]+)%2$s(?=(?!.*?%1$s)*$|.*?%1$s#|.*?%1$s<)",
+                "%1$s(?<var>[^\\s>/#\\^]+)%2$s(?=(?!.*?%1$s/)|.*?%1$s#|.*?%1$s<|.*?%1$s^)",
                 indicate.safeStart(),
                 indicate.safeEnd()
             )
