@@ -38,34 +38,34 @@ import java.util.regex.Pattern;
  */
 public final class Section implements Tag {
     /**
-     * Indicate.
-     */
-    private final transient TagIndicate indct;
-    /**
      * Variable tag.
      */
     private final Tag vrble;
+    /**
+     * Section Regexp pattern.
+     */
+    private final Pattern patt;
 
     /**
      * Constructor.
      * @param indicate Indicate.
      */
     public Section(final TagIndicate indicate) {
-        this.indct = indicate;
         this.vrble = new Variable(indicate);
+        this.patt = Pattern.compile(
+            String.format(
+                "%1$s#([^\\s]+)%2$s(.+?)%1$s/(\\1)%2$s",
+                indicate.safeStart(),
+                indicate.safeEnd()
+            )
+        );
     }
 
     @Override
     public String render(final String tmpl, final Map<String, Object> pairs) {
         final StringBuilder result = new StringBuilder();
         int start = 0;
-        final Matcher matcher = Pattern.compile(
-            String.format(
-                "%1$s\\s*#\\s*([^\\s]+)\\s*%2$s(.+)%1$s\\s*/\\s*(\\1)\\s*%2$s",
-                this.indct.safeStart(),
-                this.indct.safeEnd()
-            )
-        ).matcher(tmpl);
+        final Matcher matcher = this.patt.matcher(tmpl);
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
             final String name = matcher.group(1);
@@ -76,9 +76,7 @@ public final class Section implements Tag {
             } else if (pairs.containsKey(name) && pair instanceof List) {
                 for (final Object elem : (List) pair) {
                     if (elem instanceof Map) {
-                        result.append(
-                            this.vrble.render(value, (Map) elem)
-                        );
+                        result.append(this.vrble.render(value, (Map) elem));
                     } else {
                         result.append(value);
                     }
@@ -87,6 +85,10 @@ public final class Section implements Tag {
             start = matcher.end();
         }
         result.append(tmpl.substring(start, tmpl.length()));
-        return result.toString();
+        String out = result.toString();
+        if (this.patt.matcher(out).find()) {
+            out = this.render(out, pairs);
+        }
+        return out;
     }
 }

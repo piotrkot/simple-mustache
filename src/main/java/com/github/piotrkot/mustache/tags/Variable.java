@@ -37,32 +37,32 @@ import java.util.regex.Pattern;
  */
 public final class Variable implements Tag {
     /**
-     * Indicate.
+     * Variable pattern.
      */
-    private final transient TagIndicate indct;
+    private final transient Pattern patt;
     /**
      * Constructor.
      *
      * @param indicate Indicate.
      */
     public Variable(final TagIndicate indicate) {
-        this.indct = indicate;
+        this.patt = Pattern.compile(
+            String.format(
+                "%1$s(?<var>[^\\s>/#\\^]+)%2$s",
+                indicate.safeStart(),
+                indicate.safeEnd()
+            )
+        );
     }
 
     @Override
     public String render(final String tmpl, final Map<String, Object> pairs) {
         final StringBuilder result = new StringBuilder();
         int start = 0;
-        final Matcher matcher = Pattern.compile(
-            String.format(
-                "%s\\s*([^\\s>/#\\^]+)\\s*%s",
-                this.indct.safeStart(),
-                this.indct.safeEnd()
-            )
-        ).matcher(tmpl);
+        final Matcher matcher = this.patt.matcher(tmpl);
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
-            final String name = matcher.group(1);
+            final String name = matcher.group("var");
             if (pairs.containsKey(name)) {
                 result.append(pairs.get(name));
             }

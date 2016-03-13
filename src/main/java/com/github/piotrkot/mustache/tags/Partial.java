@@ -46,13 +46,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class Partial implements Tag {
     /**
-     * Indicate.
-     */
-    private final transient TagIndicate indct;
-    /**
      * Path for partials.
      */
-    private final String path;
+    private final transient String path;
+    /**
+     * Partial pattern.
+     */
+    private final transient Pattern patt;
+
     /**
      * Constructor.
      *
@@ -60,21 +61,21 @@ public final class Partial implements Tag {
      * @param directory Path for partials.
      */
     public Partial(final TagIndicate indicate, final String directory) {
-        this.indct = indicate;
         this.path = directory;
+        this.patt = Pattern.compile(
+            String.format(
+                "%s>([^\\s]+)%s",
+                indicate.safeStart(),
+                indicate.safeEnd()
+            )
+        );
     }
 
     @Override
     public String render(final String tmpl, final Map<String, Object> pairs) {
         final StringBuilder result = new StringBuilder();
         int start = 0;
-        final Matcher matcher = Pattern.compile(
-            String.format(
-                "%s\\s*>\\s*([^\\s]+)\\s*%s",
-                this.indct.safeStart(),
-                this.indct.safeEnd()
-            )
-        ).matcher(tmpl);
+        final Matcher matcher = this.patt.matcher(tmpl);
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
             final Path file = Paths.get(
