@@ -48,10 +48,10 @@ public final class VariableTest {
             new Variable(
                 new SquareIndicate()
             ).render(
-                "1 [[2]] [[3]] [[4]] [[5]] [[>6]] [[#7]] [[/8]] [[^9]]",
+                "1 [[2]] [[3]] [[4]] [[5]] [[>6]] [[#7]] [[/7]]",
                 ImmutableMap.of("2", 2, "3", "three", "4", "[[four]]")
             ),
-            Matchers.is("1 2 three [[four]]  [[>6]] [[#7]] [[/8]] [[^9]]")
+            Matchers.is("1 2 three [[four]]  [[>6]] [[#7]] [[/7]]")
         );
     }
 

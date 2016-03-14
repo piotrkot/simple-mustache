@@ -23,6 +23,7 @@
  */
 package com.github.piotrkot.mustache.tags;
 
+import com.github.piotrkot.mustache.EasyMatch;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
 import java.util.Map;
@@ -40,15 +41,17 @@ public final class Variable implements Tag {
      * Variable pattern.
      */
     private final transient Pattern patt;
+    private final TagIndicate indic;
+
     /**
      * Constructor.
-     *
      * @param indicate Indicate.
      */
     public Variable(final TagIndicate indicate) {
+        this.indic = indicate;
         this.patt = Pattern.compile(
             String.format(
-                "%1$s(?<var>[^\\s>/#\\^]+)%2$s(?=(?!.*?%1$s/)|.*?%1$s#|.*?%1$s<|.*?%1$s^)",
+                "%s([^\\s>/#\\^]+)%s",
                 indicate.safeStart(),
                 indicate.safeEnd()
             )
@@ -59,10 +62,34 @@ public final class Variable implements Tag {
     public String render(final String tmpl, final Map<String, Object> pairs) {
         final StringBuilder result = new StringBuilder();
         int start = 0;
-        final Matcher matcher = this.patt.matcher(tmpl);
+        final EasyMatch matcher = new EasyMatch(
+            this.patt,
+            tmpl,
+            context -> new Patt(
+                Pattern.compile(
+                    String.format(
+                        "%s[#\\^].*?%s",
+                        indic.safeStart(),
+                        indic.safeEnd()
+                    )
+                ).matcher(
+                    context.input().substring(context.end())
+                )
+            ).count() == new Patt(
+                Pattern.compile(
+                    String.format(
+                        "%s/.*?%s",
+                        indic.safeStart(),
+                        indic.safeEnd()
+                    )
+                ).matcher(
+                    context.input().substring(context.end())
+                )
+            ).count()
+        );
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
-            final String name = matcher.group("var");
+            final String name = matcher.group(1);
             if (pairs.containsKey(name)) {
                 result.append(pairs.get(name));
             }
@@ -71,4 +98,21 @@ public final class Variable implements Tag {
         result.append(tmpl.substring(start, tmpl.length()));
         return result.toString();
     }
+
+    class Patt {
+        private final Matcher mtch;
+
+        public Patt(final Matcher matcher) {
+            this.mtch = matcher;
+        }
+
+        public int count() {
+            int count = 0;
+            while (mtch.find()) {
+                count++;
+            }
+            return count;
+        }
+    }
+
 }
