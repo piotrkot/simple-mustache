@@ -41,6 +41,9 @@ public final class Variable implements Tag {
      * Variable pattern.
      */
     private final transient Pattern patt;
+    /**
+     * Indicate.
+     */
     private final TagIndicate indic;
 
     /**
@@ -65,22 +68,22 @@ public final class Variable implements Tag {
         final EasyMatch matcher = new EasyMatch(
             this.patt,
             tmpl,
-            context -> new Patt(
+            context -> new PatternCount(
                 Pattern.compile(
                     String.format(
                         "%s[#\\^].*?%s",
-                        indic.safeStart(),
-                        indic.safeEnd()
+                        this.indic.safeStart(),
+                        this.indic.safeEnd()
                     )
                 ).matcher(
                     context.input().substring(context.end())
                 )
-            ).count() == new Patt(
+            ).count() == new PatternCount(
                 Pattern.compile(
                     String.format(
                         "%s/.*?%s",
-                        indic.safeStart(),
-                        indic.safeEnd()
+                        this.indic.safeStart(),
+                        this.indic.safeEnd()
                     )
                 ).matcher(
                     context.input().substring(context.end())
@@ -99,17 +102,31 @@ public final class Variable implements Tag {
         return result.toString();
     }
 
-    class Patt {
+    /**
+     * Count of pattern matched.
+     */
+    class PatternCount {
+        /**
+         * Matcher.
+         */
         private final Matcher mtch;
 
-        public Patt(final Matcher matcher) {
+        /**
+         * Constructor.
+         * @param matcher Matcher.
+         */
+        PatternCount(final Matcher matcher) {
             this.mtch = matcher;
         }
 
+        /**
+         * Number of occurrences of pattern.
+         * @return Number of patterns found.
+         */
         public int count() {
             int count = 0;
-            while (mtch.find()) {
-                count++;
+            while (this.mtch.find()) {
+                count += 1;
             }
             return count;
         }

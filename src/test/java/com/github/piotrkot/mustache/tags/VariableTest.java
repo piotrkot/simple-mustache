@@ -58,6 +58,7 @@ public final class VariableTest {
     /**
      * Should not render variable inside section.
      * @throws Exception If fails.
+     * @checkstyle MultipleStringLiterals (8 lines)
      */
     @Test
     public void shouldNotRenderVariableInside() throws Exception {
@@ -65,11 +66,11 @@ public final class VariableTest {
             new Variable(
                 new SquareIndicate()
             ).render(
-                "[[#2]][[3]][[/2]] [[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]",
-                ImmutableMap.of("3", "A", "5", "B", "6", "C")
+                "[[#2]][[1]][[/2]] [[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]",
+                ImmutableMap.of("1", "A", "5", "B", "6", "C")
             ),
             Matchers.is(
-                "[[#2]][[3]][[/2]] [[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]"
+                "[[#2]][[1]][[/2]] [[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]"
             )
         );
     }

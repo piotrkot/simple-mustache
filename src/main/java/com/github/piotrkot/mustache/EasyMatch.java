@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Match which can use function applied on inpt for pattern search.
+ * Match which can use function applied on input for pattern search.
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
@@ -73,7 +73,7 @@ public final class EasyMatch {
     }
 
     /**
-     * Start index of previous match, like {@link Matcher#start()}
+     * Start index of previous match, like {@link Matcher#start()}.
      * @return Index of first char matched.
      * @see Matcher#start()
      */
@@ -82,7 +82,7 @@ public final class EasyMatch {
     }
 
     /**
-     * Offset after last char matched, like {@link Matcher#end()}
+     * Offset after last char matched, like {@link Matcher#end()}.
      * @return Offset after last char matched.
      * @see Matcher#end()
      */
@@ -92,33 +92,59 @@ public final class EasyMatch {
 
     /**
      * Input subsequence captured by the given group during the previous
-     * match, like {@link Matcher#group(int)}
+     * match, like {@link Matcher#group(int)}.
      * @param group Index of group.
      * @return Subsequence captured by the given group during the previous
-     * match.
+     *  match.
      * @see Matcher#group(int)
      */
     public String group(final int group) {
         return this.mtchr.group(group);
     }
 
-    public class Context {
+    /**
+     * Context of the match.
+     */
+    public final class Context {
+        /**
+         * Input sequence.
+         */
         private final CharSequence inpt;
+        /**
+         * Match of the pattern.
+         */
         private final Matcher mtch;
 
+        /**
+         * Constructor.
+         * @param input Input sequence.
+         * @param match Match of the pattern.
+         */
         public Context(final CharSequence input, final Matcher match) {
             this.inpt = input;
             this.mtch = match;
         }
 
+        /**
+         * Input string.
+         * @return String.
+         */
         public String input() {
             return this.inpt.toString();
         }
 
+        /**
+         * Start of the pattern match.
+         * @return Start index of the match.
+         */
         public int start() {
             return this.mtch.start();
         }
 
+        /**
+         * End of the pattern match.
+         * @return End index of the match.
+         */
         public int end() {
             return this.mtch.end();
         }
