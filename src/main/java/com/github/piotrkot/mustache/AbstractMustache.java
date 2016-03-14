@@ -117,7 +117,7 @@ public abstract class AbstractMustache implements Template {
         this.tags = Arrays.asList(
             new Partial(this, directory.toString()),
             new Section(this),
-            new InvSection(),
+            new InvSection(this),
             new Variable(this)
         );
     }
