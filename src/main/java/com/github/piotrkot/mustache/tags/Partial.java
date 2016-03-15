@@ -66,6 +66,7 @@ public final class Partial implements Tag {
         );
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public String render(final String tmpl, final Map<String, Object> pairs) {
         final StringBuilder result = new StringBuilder();

@@ -23,9 +23,7 @@
  */
 package com.github.piotrkot.mustache;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.CharStreams;
-import com.google.common.io.Closeables;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,7 +34,6 @@ import java.util.stream.Collectors;
 
 /**
  * File contents.
- *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
@@ -46,6 +43,7 @@ public final class Contents {
      * Template content.
      */
     private final transient String cont;
+
     /**
      * Constructor.
      * @param stream Input stream.
@@ -53,11 +51,16 @@ public final class Contents {
      */
     public Contents(final InputStream stream) throws IOException {
         this(
-            CharStreams
-                .toString(new InputStreamReader(stream, Charsets.UTF_8))
+            new BufferedReader(
+                new InputStreamReader(stream, StandardCharsets.UTF_8)
+            ).lines().collect(
+                Collectors.joining(
+                    System.lineSeparator(), "", System.lineSeparator()
+                )
+            )
         );
-        Closeables.closeQuietly(stream);
     }
+
     /**
      * Constructor.
      * @param path File path.
@@ -68,13 +71,12 @@ public final class Contents {
             Files.lines(path, StandardCharsets.UTF_8)
                 .collect(
                     Collectors.joining(
-                        System.lineSeparator(),
-                        "",
-                        System.lineSeparator()
+                        System.lineSeparator(), "", System.lineSeparator()
                     )
                 )
         );
     }
+
     /**
      * Constructor.
      * @param content File contents.
@@ -85,7 +87,6 @@ public final class Contents {
 
     /**
      * File contents.
-     *
      * @return String contents.
      */
     public String asString() {
