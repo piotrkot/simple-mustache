@@ -29,6 +29,8 @@ import com.github.piotrkot.mustache.TagIndicate;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +49,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class Partial implements Tag {
     /**
+     * Mustache tags.
+     */
+    private final Collection<Tag> tags;
+    /**
      * Partial pattern.
      */
     private final transient Pattern patt;
@@ -63,6 +69,11 @@ public final class Partial implements Tag {
                 indicate.safeStart(),
                 indicate.safeEnd()
             )
+        );
+        this.tags = Arrays.asList(
+            new Section(indicate),
+            new InvSection(indicate),
+            new Variable(indicate)
         );
     }
 
@@ -86,7 +97,11 @@ public final class Partial implements Tag {
                     } else {
                         contents = new Contents(value.toString());
                     }
-                    result.append(contents.asString());
+                    String rendered = contents.asString();
+                    for (final Tag tag : this.tags) {
+                        rendered = tag.render(rendered, pairs);
+                    }
+                    result.append(rendered);
                 } catch (final IOException ex) {
                     log.info("File {} not found", value);
                 }
