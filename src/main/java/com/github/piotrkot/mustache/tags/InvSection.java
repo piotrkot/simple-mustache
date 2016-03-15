@@ -70,8 +70,8 @@ public final class InvSection implements Tag {
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
             final String name = matcher.group(1);
-            if (!(pairs.containsKey(name) &&
-                pairs.get(name).toString().equals("true"))) {
+            if (!(pairs.containsKey(name)
+                && pairs.get(name).toString().equals("true"))) {
                 result.append(this.vrble.render(matcher.group(2), pairs));
             }
             start = matcher.end();

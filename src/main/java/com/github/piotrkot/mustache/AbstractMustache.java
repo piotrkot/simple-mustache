@@ -29,8 +29,6 @@ import com.github.piotrkot.mustache.tags.Section;
 import com.github.piotrkot.mustache.tags.Variable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,7 +58,7 @@ public abstract class AbstractMustache implements Template {
      * @throws IOException When fails.
      */
     public AbstractMustache(final InputStream stream) throws IOException {
-        this(new File(stream).content());
+        this(new Contents(stream).asString());
     }
     /**
      * Constructor.
@@ -69,9 +67,7 @@ public abstract class AbstractMustache implements Template {
      * @throws IOException When fails.
      */
     public AbstractMustache(final Path path) throws IOException {
-        this(
-            Files.lines(path, StandardCharsets.UTF_8).reduce("", String::concat)
-        );
+        this(new Contents(path).asString());
     }
     /**
      * Constructor.

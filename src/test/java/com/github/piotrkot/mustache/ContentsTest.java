@@ -21,75 +21,66 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.piotrkot.mustache.tags;
+package com.github.piotrkot.mustache;
 
-import com.github.piotrkot.mustache.Contents;
-import com.github.piotrkot.mustache.TagIndicate;
-import java.util.Collections;
-import java.util.regex.Pattern;
+import java.nio.file.Paths;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Test to Partial.
+ * Tests for Contents class.
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class PartialTest {
+public final class ContentsTest {
     /**
-     * Should render partial.
+     * Expected content.
+     */
+    private static final String CONTENT = "head1\nhead2\n";
+    /**
+     * Resource to read.
+     */
+    private static final String RESOURCE = "/prtl.mustache";
+    /**
+     * Should read stream.
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderWithPartialString() throws Exception {
+    public void shouldReadStream() throws Exception {
         MatcherAssert.assertThat(
-            new Partial(
-                new SquareIndicate()
-            ).render(
-                new Contents(
-                    this.getClass().getResourceAsStream("/prtl-test.mustache")
-                ).asString(),
-                Collections.singletonMap("prtl", "head1\nhead2")
-            ),
-            Matchers.is("body1\nhead1\nhead2\nbody2\n")
+            new Contents(
+                this.getClass().getResourceAsStream(ContentsTest.RESOURCE)
+            ).asString(),
+            Matchers.is(ContentsTest.CONTENT)
+        );
+    }
+    /**
+     * Should read string.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldReadString() throws Exception {
+        MatcherAssert.assertThat(
+            new Contents(ContentsTest.CONTENT).asString(),
+            Matchers.is(ContentsTest.CONTENT)
         );
     }
 
     /**
-     * Should render partial in partial.
+     * Should read path.
      * @throws Exception If fails.
      */
     @Test
-    @Ignore
-    public void shouldRenderWithPartialInPartial() throws Exception {
+    public void shouldReadPath() throws Exception {
         MatcherAssert.assertThat(
-            new Partial(
-                new SquareIndicate()
-            ).render(
-                new Contents(
-                    this.getClass().getResourceAsStream("/prtl2-test.mustache")
-                ).asString(),
-                Collections.emptyMap()
-            ),
-            Matchers.is("body1\nhead1-2\nhead2-2\nhead1\nhead2\nbody2")
+            new Contents(
+                Paths.get(
+                    this.getClass().getResource(ContentsTest.RESOURCE).toURI()
+                )
+            ).asString(),
+            Matchers.is(ContentsTest.CONTENT)
         );
-    }
-
-    /**
-     * Tag indicate with double square parentheses.
-     */
-    private class SquareIndicate implements TagIndicate {
-        @Override
-        public String safeStart() {
-            return Pattern.quote("[[");
-        }
-
-        @Override
-        public String safeEnd() {
-            return Pattern.quote("]]");
-        }
     }
 }

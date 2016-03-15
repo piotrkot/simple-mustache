@@ -1,4 +1,4 @@
-package com.github.piotrkot.mustache.tags; /**
+/**
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -21,6 +21,7 @@ package com.github.piotrkot.mustache.tags; /**
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.TagIndicate;
 import com.google.common.collect.ImmutableMap;
@@ -37,7 +38,7 @@ import org.junit.Test;
  * @version $Id$
  * @since 1.0
  */
-public class InvSectionTest {
+public final class InvSectionTest {
     /**
      * Should render inverted section.
      *

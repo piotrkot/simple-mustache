@@ -23,7 +23,7 @@
  */
 package com.github.piotrkot.mustache.tags;
 
-import com.github.piotrkot.mustache.File;
+import com.github.piotrkot.mustache.Contents;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
 import java.io.IOException;
@@ -77,16 +77,15 @@ public final class Partial implements Tag {
             final Object value = pairs.get(name);
             if (pairs.containsKey(name)) {
                 try {
-                    File file;
+                    final Contents contents;
                     if (value instanceof Path) {
-                        file = new File((Path) value);
+                        contents = new Contents((Path) value);
                     } else if (value instanceof InputStream) {
-                        file = new File((InputStream) value);
+                        contents = new Contents((InputStream) value);
                     } else {
-                        file = new File(value.toString());
+                        contents = new Contents(value.toString());
                     }
-                    result.append(file.content());
-                    result.append(System.lineSeparator());
+                    result.append(contents.asString());
                 } catch (final IOException ex) {
                     log.info("File {} not found", value);
                 }

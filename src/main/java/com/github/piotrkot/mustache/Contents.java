@@ -23,22 +23,25 @@
  */
 package com.github.piotrkot.mustache;
 
-import java.io.BufferedReader;
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
 
 /**
- * File contents representation.
+ * File contents.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class File {
+public final class Contents {
     /**
      * Template content.
      */
@@ -46,28 +49,37 @@ public final class File {
     /**
      * Constructor.
      * @param stream Input stream.
+     * @throws IOException When fails.
      */
-    public File(final InputStream stream) throws IOException {
-        this(File.asString(stream));
+    public Contents(final InputStream stream) throws IOException {
+        this(
+            CharStreams
+                .toString(new InputStreamReader(stream, Charsets.UTF_8))
+        );
+        Closeables.closeQuietly(stream);
     }
     /**
      * Constructor.
      * @param path File path.
+     * @throws IOException When fails.
      */
-    public File(final Path path) throws IOException {
+    public Contents(final Path path) throws IOException {
         this(
-            Files.lines(path, StandardCharsets.UTF_8).reduce(
-                "",
-                (pre, post) -> String
-                    .join(System.lineSeparator(), pre, post)
-            )
+            Files.lines(path, StandardCharsets.UTF_8)
+                .collect(
+                    Collectors.joining(
+                        System.lineSeparator(),
+                        "",
+                        System.lineSeparator()
+                    )
+                )
         );
     }
     /**
      * Constructor.
      * @param content File contents.
      */
-    public File(final String content) {
+    public Contents(final String content) {
         this.cont = content;
     }
 
@@ -76,27 +88,7 @@ public final class File {
      *
      * @return String contents.
      */
-    public String content() {
+    public String asString() {
         return this.cont;
     }
-
-    /**
-     * String representation of a stream.
-     *
-     * @return Content as string.
-     * @throws IOException When fails.
-     */
-    private static String asString(final InputStream stream) throws IOException {
-        final BufferedReader buff = new BufferedReader(
-            new InputStreamReader(stream, StandardCharsets.UTF_8)
-        );
-        final StringBuilder bld = new StringBuilder(1024);
-        String str = buff.readLine();
-        while (str != null) {
-            bld.append(str);
-            str = buff.readLine();
-        }
-        return bld.toString();
-    }
-
 }
