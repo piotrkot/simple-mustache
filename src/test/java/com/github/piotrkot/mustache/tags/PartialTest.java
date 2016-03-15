@@ -25,11 +25,12 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Contents;
 import com.github.piotrkot.mustache.TagIndicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.regex.Pattern;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -44,37 +45,39 @@ public final class PartialTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderWithPartialString() throws Exception {
+    public void shouldRenderWithPartial() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
                 new SquareIndicate()
             ).render(
                 new Contents(
-                    this.getClass().getResourceAsStream("/prtl-test.mustache")
+                    "A [[>var]] B [[>miss]]"
                 ).asString(),
-                Collections.singletonMap("prtl", "head1\nhead2")
+                Collections.singletonMap("var", "inj")
             ),
-            Matchers.is("body1\nhead1\nhead2\nbody2\n")
+            Matchers.is("A inj B ")
         );
     }
 
     /**
-     * Should render partial in partial.
+     * Should render partial with sequence.
      * @throws Exception If fails.
      */
     @Test
-    @Ignore
-    public void shouldRenderWithPartialInPartial() throws Exception {
+    public void shouldRenderWithPartialSequence() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
                 new SquareIndicate()
             ).render(
                 new Contents(
-                    this.getClass().getResourceAsStream("/prtl2-test.mustache")
+                    "A [[>seq]] B"
                 ).asString(),
-                Collections.emptyMap()
+                ImmutableMap.of(
+                    "seq", "[[#a]]x [[X]][[/a]] [[>more]]",
+                    "a", ImmutableList.of("x1", "x2")
+                )
             ),
-            Matchers.is("body1\nhead1-2\nhead2-2\nhead1\nhead2\nbody2")
+            Matchers.is("A x x1 x x2 [[>more]] B")
         );
     }
 
