@@ -25,7 +25,6 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Contents;
 import com.github.piotrkot.mustache.TagIndicate;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.regex.Pattern;
@@ -73,11 +72,13 @@ public final class PartialTest {
                     "A [[>seq]] B"
                 ).asString(),
                 ImmutableMap.of(
-                    "seq", "[[#a]]x [[X]][[/a]] [[>more]]",
-                    "a", ImmutableList.of("x1", "x2")
+                    "seq", "[[#a]][[x]][[/a]] [[^b]]D[[/b]] [[>more]] [[y]]",
+                    "a", Collections.singletonList(ImmutableMap.of("x", "X")),
+                    "b", Boolean.FALSE,
+                    "y", "Y"
                 )
             ),
-            Matchers.is("A x x1 x x2 [[>more]] B")
+            Matchers.is("A X D [[>more]] Y B")
         );
     }
 
