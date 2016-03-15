@@ -53,8 +53,7 @@ public final class PartialTest {
     public void shouldRenderWithPartial() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
-                new SquareIndicate(),
-                PartialTest.PATH
+                new SquareIndicate()
             ).render(
                 new FileStream(
                     this.getClass().getResourceAsStream("/prtl-test.mustache")
@@ -74,8 +73,7 @@ public final class PartialTest {
     public void shouldRenderWithPartialInPartial() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
-                new SquareIndicate(),
-                PartialTest.PATH
+                new SquareIndicate()
             ).render(
                 new FileStream(
                     this.getClass().getResourceAsStream("/prtl2-test.mustache")

@@ -32,7 +32,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -66,36 +65,12 @@ public abstract class AbstractMustache implements Template {
     /**
      * Constructor.
      *
-     * @param stream Template stream.
-     * @param directory Partial path.
-     * @throws IOException When fails.
-     */
-    public AbstractMustache(final InputStream stream, final Path directory)
-        throws IOException {
-        this(new FileStream(stream).asString(), directory);
-    }
-    /**
-     * Constructor.
-     *
      * @param path Template path.
      * @throws IOException When fails.
      */
     public AbstractMustache(final Path path) throws IOException {
-        this(path, path.getParent());
-    }
-    /**
-     * Constructor.
-     *
-     * @param path Template path.
-     * @param directory Partial path.
-     * @throws IOException When fails.
-     */
-    public AbstractMustache(final Path path, final Path directory)
-        throws IOException {
         this(
-            Files.lines(path, StandardCharsets.UTF_8)
-                .reduce("", String::concat),
-            directory
+            Files.lines(path, StandardCharsets.UTF_8).reduce("", String::concat)
         );
     }
     /**
@@ -104,18 +79,9 @@ public abstract class AbstractMustache implements Template {
      * @param content Template content.
      */
     public AbstractMustache(final String content) {
-        this(content, Paths.get(""));
-    }
-    /**
-     * Constructor.
-     *
-     * @param content Template content.
-     * @param directory Partial path.
-     */
-    public AbstractMustache(final String content, final Path directory) {
         this.str = content;
         this.tags = Arrays.asList(
-            new Partial(this, directory.toString()),
+            new Partial(this),
             new Section(this),
             new InvSection(this),
             new Variable(this)
