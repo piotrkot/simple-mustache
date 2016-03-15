@@ -23,13 +23,11 @@
  */
 package com.github.piotrkot.mustache.tags;
 
-import com.github.piotrkot.mustache.FileStream;
+import com.github.piotrkot.mustache.File;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -99,26 +97,4 @@ public final class Partial implements Tag {
         return result.toString();
     }
 
-    class File {
-        private final String cnt;
-        public File(final InputStream stream) throws IOException {
-            this(new FileStream(stream).asString());
-        }
-        public File(final Path path) throws IOException {
-            this(
-                Files.lines(path, StandardCharsets.UTF_8).reduce(
-                    "",
-                    (pre, post) -> String
-                        .join(System.lineSeparator(), pre, post)
-                )
-            );
-        }
-        public File(final String content) {
-            this.cnt = content;
-        }
-
-        public String content() {
-            return this.cnt;
-        }
-    }
 }

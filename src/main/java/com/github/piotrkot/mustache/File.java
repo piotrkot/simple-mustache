@@ -28,35 +28,67 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
- * Utility file strm class.
+ * File contents representation.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class FileStream {
+public final class File {
     /**
-     * File input stream.
+     * Template content.
      */
-    private final InputStream strm;
+    private final transient String cont;
     /**
      * Constructor.
-     * @param stream File input stream;.
+     * @param stream Input stream.
      */
-    public FileStream(final InputStream stream) {
-        this.strm = stream;
+    public File(final InputStream stream) throws IOException {
+        this(File.asString(stream));
+    }
+    /**
+     * Constructor.
+     * @param path File path.
+     */
+    public File(final Path path) throws IOException {
+        this(
+            Files.lines(path, StandardCharsets.UTF_8).reduce(
+                "",
+                (pre, post) -> String
+                    .join(System.lineSeparator(), pre, post)
+            )
+        );
+    }
+    /**
+     * Constructor.
+     * @param content File contents.
+     */
+    public File(final String content) {
+        this.cont = content;
+    }
+
+    /**
+     * File contents.
+     *
+     * @return String contents.
+     */
+    public String content() {
+        return this.cont;
     }
 
     /**
      * String representation of a stream.
+     *
      * @return Content as string.
      * @throws IOException When fails.
      */
-    public String asString() throws IOException {
+    private static String asString(final InputStream stream) throws IOException {
         final BufferedReader buff = new BufferedReader(
-            new InputStreamReader(this.strm, StandardCharsets.UTF_8)
+            new InputStreamReader(stream, StandardCharsets.UTF_8)
         );
         final StringBuilder bld = new StringBuilder(1024);
         String str = buff.readLine();

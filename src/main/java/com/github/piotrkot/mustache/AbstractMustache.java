@@ -60,7 +60,7 @@ public abstract class AbstractMustache implements Template {
      * @throws IOException When fails.
      */
     public AbstractMustache(final InputStream stream) throws IOException {
-        this(new FileStream(stream).asString());
+        this(new File(stream).content());
     }
     /**
      * Constructor.

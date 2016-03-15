@@ -23,7 +23,7 @@
  */
 package com.github.piotrkot.mustache.tags;
 
-import com.github.piotrkot.mustache.FileStream;
+import com.github.piotrkot.mustache.File;
 import com.github.piotrkot.mustache.TagIndicate;
 import java.util.Collections;
 import java.util.regex.Pattern;
@@ -55,7 +55,7 @@ public final class PartialTest {
             new Partial(
                 new SquareIndicate()
             ).render(
-                new FileStream(
+                new File(
                     this.getClass().getResourceAsStream("/prtl-test.mustache")
                 ).asString(),
                 Collections.emptyMap()
@@ -75,7 +75,7 @@ public final class PartialTest {
             new Partial(
                 new SquareIndicate()
             ).render(
-                new FileStream(
+                new File(
                     this.getClass().getResourceAsStream("/prtl2-test.mustache")
                 ).asString(),
                 Collections.emptyMap()
