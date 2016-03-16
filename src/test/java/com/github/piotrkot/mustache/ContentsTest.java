@@ -44,11 +44,17 @@ public final class ContentsTest {
      */
     private static final String RESOURCE = "/prtl.mustache";
     /**
-     * Should read stream.
+     * Should read stream. For safety check if can read twice.
      * @throws Exception If fails.
      */
     @Test
     public void shouldReadStream() throws Exception {
+        MatcherAssert.assertThat(
+            new Contents(
+                this.getClass().getResourceAsStream(ContentsTest.RESOURCE)
+            ).asString(),
+            Matchers.is(ContentsTest.CONTENT)
+        );
         MatcherAssert.assertThat(
             new Contents(
                 this.getClass().getResourceAsStream(ContentsTest.RESOURCE)

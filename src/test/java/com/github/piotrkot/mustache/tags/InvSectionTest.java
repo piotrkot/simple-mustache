@@ -66,9 +66,10 @@ public final class InvSectionTest {
     public void shouldRenderInvSectionWithVariable() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
-                "1 [[^a]]X [[x]][[/a]] [[y]]",
+                "1 [[^a]]X [[x]][[/a]] [[^b]]A[[/b]][[y]]",
                 ImmutableMap.of(
                     "a", Collections.emptyList(),
+                    "b", Collections.singleton("nonempty"),
                     "x", "iks"
                 )
             ),

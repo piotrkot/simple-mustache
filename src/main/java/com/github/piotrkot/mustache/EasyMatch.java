@@ -28,7 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Match which can use function applied on input for pattern search.
+ * Match which can use function applied on input for pattern search. This is
+ * to simplify regex creation.
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
