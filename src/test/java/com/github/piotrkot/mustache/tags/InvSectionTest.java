@@ -66,14 +66,35 @@ public final class InvSectionTest {
     public void shouldRenderInvSectionWithVariable() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
-                "1 [[^a]]X [[x]][[/a]] [[^b]]A[[/b]][[y]]",
+                "1 [[^a]]X [[x]][[/a]] [[y]][[^c]]W[[/c]]",
                 ImmutableMap.of(
                     "a", Collections.emptyList(),
-                    "b", Collections.singleton("nonempty"),
+                    "c", "false",
                     "x", "iks"
                 )
             ),
-            Matchers.is("1 X iks [[y]]")
+            Matchers.is("1 X iks [[y]]W")
+        );
+    }
+
+    /**
+     * Should not render inverted section.
+     *
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldNotRenderInvSection() throws Exception {
+        MatcherAssert.assertThat(
+            new InvSection(new SquareIndicate()).render(
+                "[[^A]]A[[/A]][[^B]]B[[/B]][[^C]]C[[/C]][[^D]]D[[/D]]",
+                ImmutableMap.of(
+                    "A", Collections.singleton("nonempty"),
+                    "B", true,
+                    "C", "true",
+                    "D", 1
+                )
+            ),
+            Matchers.is("")
         );
     }
 

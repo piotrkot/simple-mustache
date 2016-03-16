@@ -25,7 +25,7 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,12 +72,11 @@ public final class InvSection implements Tag {
             result.append(tmpl.substring(start, matcher.start()));
             final String name = matcher.group(1);
             final Object value = pairs.get(name);
-            if (pairs.containsKey(name) && value.toString().equals("false")) {
+            if (pairs.containsKey(name)
+                && value.toString().equals(Boolean.FALSE.toString())) {
                 result.append(this.vrble.render(matcher.group(2), pairs));
-            } else if (pairs.containsKey(name) && value instanceof List
-                && ((List) value).isEmpty()) {
-                result.append(this.vrble.render(matcher.group(2), pairs));
-            } else if (!pairs.containsKey(name)) {
+            } else if (pairs.containsKey(name) && value instanceof Collection
+                && ((Collection) value).isEmpty()) {
                 result.append(this.vrble.render(matcher.group(2), pairs));
             }
             start = matcher.end();
