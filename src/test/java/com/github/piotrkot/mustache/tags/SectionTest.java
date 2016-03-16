@@ -107,7 +107,7 @@ public final class SectionTest {
     public void shouldRenderSectionWithSubsection() throws Exception {
         MatcherAssert.assertThat(
             new Section(new SquareIndicate()).render(
-                "1 [[#o]]-X [[q]][[#i]]Y [[w]][[/i]][[/o]]",
+                "1 [[#o]]-X [[q]]+[[#i]]Y [[w]][[/i]] [[/o]]",
                 ImmutableMap.of(
                     "o", ImmutableList.of(
                         ImmutableMap.of("q", "Q1"),
@@ -119,7 +119,7 @@ public final class SectionTest {
                     )
                 )
             ),
-            Matchers.is("1 -X Q1Y W1Y W2-X Q2Y W1Y W2")
+            Matchers.is("1 -X Q1+Y W1Y W2 -X Q2+Y W1Y W2 ")
         );
     }
 

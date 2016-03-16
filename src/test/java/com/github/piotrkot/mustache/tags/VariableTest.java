@@ -76,6 +76,24 @@ public final class VariableTest {
     }
 
     /**
+     * Should not render variable inside nested section.
+     * @throws Exception If fails.
+     * @checkstyle MultipleStringLiterals (8 lines)
+     */
+    @Test
+    public void shouldNotRenderVariableInsideNested() throws Exception {
+        MatcherAssert.assertThat(
+            new Variable(
+                new SquareIndicate()
+            ).render(
+                "[[#2]][[11]] [[^4]][[15]][[/4]] [[/2]]",
+                ImmutableMap.of("11", "AA", "15", "BB")
+            ),
+            Matchers.is("[[#2]][[11]] [[^4]][[15]][[/4]] [[/2]]")
+        );
+    }
+
+    /**
      * Tag indicate with double square parentheses.
      */
     private class SquareIndicate implements TagIndicate {

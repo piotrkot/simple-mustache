@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 
 /**
  * Variable template tag. Basic string replacement.
+ *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
@@ -48,6 +49,7 @@ public final class Variable implements Tag {
 
     /**
      * Constructor.
+     *
      * @param indicate Indicate.
      */
     public Variable(final TagIndicate indicate) {
@@ -68,27 +70,26 @@ public final class Variable implements Tag {
         final EasyMatch matcher = new EasyMatch(
             this.patt,
             tmpl,
-            context -> new PatternCount(
-                Pattern.compile(
-                    String.format(
-                        "%s[#\\^].*?%s",
-                        this.indic.safeStart(),
-                        this.indic.safeEnd()
-                    )
-                ).matcher(
-                    context.input().substring(context.end())
-                )
-            ).count() == new PatternCount(
-                Pattern.compile(
-                    String.format(
-                        "%s/.*?%s",
-                        this.indic.safeStart(),
-                        this.indic.safeEnd()
-                    )
-                ).matcher(
-                    context.input().substring(context.end())
-                )
-            ).count()
+            context -> {
+                final String after = context.input().substring(context.end());
+                return new PatternCount(
+                    Pattern.compile(
+                        String.format(
+                            "%s[#\\^].*?%s",
+                            this.indic.safeStart(),
+                            this.indic.safeEnd()
+                        )
+                    ).matcher(after)
+                ).count() == new PatternCount(
+                    Pattern.compile(
+                        String.format(
+                            "%s/.*?%s",
+                            this.indic.safeStart(),
+                            this.indic.safeEnd()
+                        )
+                    ).matcher(after)
+                ).count();
+            }
         );
         while (matcher.find()) {
             result.append(tmpl.substring(start, matcher.start()));
@@ -113,6 +114,7 @@ public final class Variable implements Tag {
 
         /**
          * Constructor.
+         *
          * @param matcher Matcher.
          */
         PatternCount(final Matcher matcher) {
@@ -121,6 +123,7 @@ public final class Variable implements Tag {
 
         /**
          * Number of occurrences of pattern.
+         *
          * @return Number of patterns found.
          */
         public int count() {
