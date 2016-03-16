@@ -25,7 +25,7 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,10 +71,11 @@ public final class Section implements Tag {
             final String name = matcher.group(1);
             final Object pair = pairs.get(name);
             final String value = matcher.group(2);
-            if (pairs.containsKey(name) && pair.toString().equals("true")) {
+            if (pairs.containsKey(name)
+                && pair.toString().equals(Boolean.TRUE.toString())) {
                 result.append(value);
-            } else if (pairs.containsKey(name) && pair instanceof List) {
-                for (final Object elem : (List) pair) {
+            } else if (pairs.containsKey(name) && pair instanceof Collection) {
+                for (final Object elem : (Collection) pair) {
                     if (elem instanceof Map) {
                         result.append(this.vrble.render(value, (Map) elem));
                     } else {

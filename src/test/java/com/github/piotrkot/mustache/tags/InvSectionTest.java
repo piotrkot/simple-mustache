@@ -69,7 +69,7 @@ public final class InvSectionTest {
                 "1 [[^a]]X [[x]][[/a]] [[y]][[^c]]W[[/c]]",
                 ImmutableMap.of(
                     "a", Collections.emptyList(),
-                    "c", "false",
+                    "c", false,
                     "x", "iks"
                 )
             ),
@@ -90,7 +90,6 @@ public final class InvSectionTest {
                 ImmutableMap.of(
                     "A", Collections.singleton("nonempty"),
                     "B", true,
-                    "C", "true",
                     "D", 1
                 )
             ),

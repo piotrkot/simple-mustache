@@ -55,6 +55,26 @@ public final class SectionTest {
             Matchers.is("1 X YY")
         );
     }
+    /**
+     * Should not render section.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldNotRenderSection() throws Exception {
+        MatcherAssert.assertThat(
+            new Section(
+                new SquareIndicate()
+            ).render(
+                "[[#A]]X[[/A]][[#B]]Y[[/B]][[#C]]Z[[/C]][[#D]]W[[/D]]",
+                ImmutableMap.of(
+                    "A", false,
+                    "B", Collections.emptyList(),
+                    "C", 1
+                )
+            ),
+            Matchers.is("")
+        );
+    }
 
     /**
      * Should render section with variable.
