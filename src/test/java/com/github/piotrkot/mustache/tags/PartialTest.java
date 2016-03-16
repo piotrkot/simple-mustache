@@ -26,6 +26,8 @@ package com.github.piotrkot.mustache.tags;
 import com.github.piotrkot.mustache.Contents;
 import com.github.piotrkot.mustache.TagIndicate;
 import com.google.common.collect.ImmutableMap;
+import java.io.ByteArrayInputStream;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.regex.Pattern;
 import org.hamcrest.MatcherAssert;
@@ -55,6 +57,54 @@ public final class PartialTest {
                 Collections.singletonMap("var", "inj")
             ),
             Matchers.is("A inj B ")
+        );
+    }
+
+    /**
+     * Should render partial stream.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldRenderWithPartialStream() throws Exception {
+        MatcherAssert.assertThat(
+            new Partial(
+                new SquareIndicate()
+            ).render(
+                new Contents(
+                    "A [[>str]] B"
+                ).asString(),
+                Collections.singletonMap(
+                    "str",
+                    new ByteArrayInputStream("aaa".getBytes())
+                )
+            ),
+            Matchers.is("A aaa\n B")
+        );
+    }
+
+    /**
+     * Should render partial path.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldRenderWithPartialPath() throws Exception {
+        MatcherAssert.assertThat(
+            new Partial(
+                new SquareIndicate()
+            ).render(
+                new Contents(
+                    "A [[>pth]] B [[>inv]]"
+                ).asString(),
+                ImmutableMap.of(
+                    "pth",
+                    Paths.get(
+                        this.getClass().getResource("/prtl.mustache").toURI()
+                    ),
+                    "inv",
+                    Paths.get("willNotFind")
+                )
+            ),
+            Matchers.is("A head1\nhead2\n B ")
         );
     }
 
