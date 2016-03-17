@@ -26,9 +26,6 @@ package com.github.piotrkot.mustache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import org.hamcrest.MatcherAssert;
@@ -36,13 +33,13 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Tests for Abstract mustache class.
+ * Tests for Mustache class.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class AbstrMustacheTest {
+public final class MustacheTest {
 
     /**
      * Should supply with pairs.
@@ -52,7 +49,7 @@ public final class AbstrMustacheTest {
     @Test
     public void shouldSupply() throws Exception {
         MatcherAssert.assertThat(
-            new FakeMustache("1 {{a}}").supply(ImmutableMap.of("a", "A")),
+            new Mustache("1 {{a}}").supply(ImmutableMap.of("a", "A")),
             Matchers.is("1 A")
         );
     }
@@ -65,7 +62,7 @@ public final class AbstrMustacheTest {
     @Test
     public void shouldSupplyFromStream() throws Exception {
         MatcherAssert.assertThat(
-            new FakeMustache(new ByteArrayInputStream("1 {{b}}".getBytes()))
+            new Mustache(new ByteArrayInputStream("1 {{b}}".getBytes()))
                 .supply(ImmutableMap.of("b", "B")),
             Matchers.is("1 B\n")
         );
@@ -79,7 +76,7 @@ public final class AbstrMustacheTest {
     @Test
     public void shouldSupplyFromPath() throws Exception {
         MatcherAssert.assertThat(
-            new FakeMustache(
+            new Mustache(
                 Paths.get(
                     this.getClass().getResource("/prtl.mustache").toURI()
                 )
@@ -96,54 +93,15 @@ public final class AbstrMustacheTest {
     @Test
     public void shouldSupplyPartialInSection() throws Exception {
         MatcherAssert.assertThat(
-            new FakeMustache(new ByteArrayInputStream("{{#x}}{{>y}}{{/x}}".getBytes()))
-                .supply(
-                    ImmutableMap.of(
-                        "y", "inj",
-                        "x", ImmutableList.of("one", "two")
-                    )
-                ),
+            new Mustache(
+                new ByteArrayInputStream("{{#x}}{{>y}}{{/x}}".getBytes())
+            ).supply(
+                ImmutableMap.of(
+                    "y", "inj",
+                    "x", ImmutableList.of("one", "two")
+                )
+            ),
             Matchers.is("injinj\n")
         );
-    }
-
-    /**
-     * Simple mustache.
-     */
-    class FakeMustache extends AbstractMustache {
-        /**
-         * Constructor.
-         *
-         * @param content Content.
-         */
-        FakeMustache(final String content) {
-            super(content);
-        }
-        /**
-         * Constructor.
-         *
-         * @param stream Stream.
-         * @throws IOException When fails.
-         */
-        FakeMustache(final InputStream stream) throws IOException {
-            super(stream);
-        }
-        /**
-         * Constructor.
-         *
-         * @param path Path.
-         * @throws IOException When fails.
-         */
-        FakeMustache(final Path path) throws IOException {
-            super(path);
-        }
-        @Override
-        public String start() {
-            return "{{";
-        }
-        @Override
-        public String end() {
-            return "}}";
-        }
     }
 }
