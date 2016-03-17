@@ -11,25 +11,25 @@ For that I propose a simpler and object-oriented alternative.
 ## Tag types supported
 
 ### Variables
-The basic tag {{name}}
+The basic tag `{{name}}`
 Example:
 ...
 
 ### Sections
-Tag composed of two tags {{#name}} {{/name}} for which content within the tags
+Tag composed of two tags `{{#name}} {{/name}}` for which content within the tags
 is rendered one or more times.
 Example:
 ...
 
 ### Inverted sections
-Tag composed of two tags {{^name}} {{/name}} which is the inversion of
+Tag composed of two tags `{{^name}} {{/name}}` which is the inversion of
 the section tag. That is content is rendered only once on the inverse value 
 of the tag name (tag key).
 Example:
 ...
 
 ### Partials
-It's of a form {{>name}} where value for the tag name is file content. 
+It's of a form `{{>name}}` where value for the tag name is file content. 
 File content can be a String, Path or InputStream. The content can contain
 other Tag types except partials. Recursive partials are not supported to avoid
 infinite loops.
