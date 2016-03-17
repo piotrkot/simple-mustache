@@ -65,7 +65,7 @@ public final class Partial implements Tag {
     public Partial(final TagIndicate indicate) {
         this.patt = Pattern.compile(
             String.format(
-                "%s>([\\w\\.]+)%s",
+                "%s>\\s*([\\w\\.]+)\\s*%s",
                 indicate.safeStart(),
                 indicate.safeEnd()
             )
