@@ -56,7 +56,7 @@ public final class Variable implements Tag {
         this.indic = indicate;
         this.patt = Pattern.compile(
             String.format(
-                "%s([^\\s>/#\\^]+)%s",
+                "%s([\\w\\.]+)%s",
                 indicate.safeStart(),
                 indicate.safeEnd()
             )
@@ -75,7 +75,7 @@ public final class Variable implements Tag {
                 return new PatternCount(
                     Pattern.compile(
                         String.format(
-                            "%s[#\\^].*?%s",
+                            "%s[#\\^][\\w\\.]+%s",
                             this.indic.safeStart(),
                             this.indic.safeEnd()
                         )
@@ -83,7 +83,7 @@ public final class Variable implements Tag {
                 ).count() == new PatternCount(
                     Pattern.compile(
                         String.format(
-                            "%s/.*?%s",
+                            "%s/[\\w\\.]+%s",
                             this.indic.safeStart(),
                             this.indic.safeEnd()
                         )
