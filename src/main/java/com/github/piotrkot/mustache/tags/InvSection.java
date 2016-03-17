@@ -57,7 +57,7 @@ public final class InvSection implements Tag {
         this.vrble = new Variable(indicate);
         this.patt = Pattern.compile(
             String.format(
-                "%1$s\\^\\s*([\\w\\.]+)\\s*%2$s(.+?)%1$s/\\s*(\\1)\\s*%2$s",
+                "%1$s\\s*\\^\\s*([\\w\\.]+)\\s*%2$s(.+?)%1$s\\s*/\\s*(\\1)\\s*%2$s",
                 indicate.safeStart(),
                 indicate.safeEnd()
             )

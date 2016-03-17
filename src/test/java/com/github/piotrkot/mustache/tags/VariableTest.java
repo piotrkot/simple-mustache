@@ -103,7 +103,7 @@ public final class VariableTest {
             new Variable(
                 new SquareIndicate()
             ).render(
-                "[[aA0._ ]] ",
+                "[[ aA0._ ]] ",
                 ImmutableMap.of("aA0._", "XX")
             ),
             Matchers.is("XX ")

@@ -133,7 +133,7 @@ public final class SectionTest {
             new Section(
                 new SquareIndicate()
             ).render(
-                "[[#aA0._ ]] [[/ aA0._ ]]",
+                "[[ #aA0._ ]] [[ / aA0._ ]]",
                 ImmutableMap.of("aA0._", true)
             ),
             Matchers.is(" ")

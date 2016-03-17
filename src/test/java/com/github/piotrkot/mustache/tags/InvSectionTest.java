@@ -128,7 +128,7 @@ public final class InvSectionTest {
             new InvSection(
                 new SquareIndicate()
             ).render(
-                "[[^aA0._  ]] [[/ aA0._ ]]",
+                "[[ ^aA0._  ]] [[ / aA0._ ]]",
                 ImmutableMap.of("aA0._", false)
             ),
             Matchers.is(" ")

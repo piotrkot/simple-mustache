@@ -142,7 +142,7 @@ public final class PartialTest {
             new Partial(
                 new SquareIndicate()
             ).render(
-                "[[>  aA0._ ]] ",
+                "[[ >  aA0._ ]] ",
                 ImmutableMap.of("aA0._", "O")
             ),
             Matchers.is("O ")
