@@ -49,6 +49,7 @@ will be unrecognized without a warning.
 Tag names must be composed of any word characters (`A-Za-z0-9_`) 
 including dot (`.`).
 
+Within tags spaces are allowed as long as they do not split the tag names.
 
 Feel free to fork me on GitHub, report bugs or post comments.
 
