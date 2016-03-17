@@ -139,7 +139,7 @@ public final class PartialTest {
     @Test
     public void shouldRenderValidTags() throws Exception {
         MatcherAssert.assertThat(
-            new Variable(
+            new Partial(
                 new SquareIndicate()
             ).render(
                 "[[>  aA0._ ]] ",

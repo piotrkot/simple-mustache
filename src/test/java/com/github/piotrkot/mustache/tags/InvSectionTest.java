@@ -125,7 +125,7 @@ public final class InvSectionTest {
     @Test
     public void shouldRenderValidTags() throws Exception {
         MatcherAssert.assertThat(
-            new Variable(
+            new InvSection(
                 new SquareIndicate()
             ).render(
                 "[[^aA0._  ]] [[/ aA0._ ]]",

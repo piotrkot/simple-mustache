@@ -130,7 +130,7 @@ public final class SectionTest {
     @Test
     public void shouldRenderValidTags() throws Exception {
         MatcherAssert.assertThat(
-            new Variable(
+            new Section(
                 new SquareIndicate()
             ).render(
                 "[[#aA0._ ]] [[/ aA0._ ]]",
