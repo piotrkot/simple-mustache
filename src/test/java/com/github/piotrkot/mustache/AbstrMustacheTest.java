@@ -23,6 +23,7 @@
  */
 package com.github.piotrkot.mustache;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -84,6 +85,25 @@ public final class AbstrMustacheTest {
                 )
             ).supply(Collections.emptyMap()),
             Matchers.is("head1\nhead2\n")
+        );
+    }
+
+    /**
+     * Should supply partial in section.
+     *
+     * @throws Exception When fails.
+     */
+    @Test
+    public void shouldSupplyPartialInSection() throws Exception {
+        MatcherAssert.assertThat(
+            new FakeMustache(new ByteArrayInputStream("{{#x}}{{>y}}{{/x}}".getBytes()))
+                .supply(
+                    ImmutableMap.of(
+                        "y", "inj",
+                        "x", ImmutableList.of("one", "two")
+                    )
+                ),
+            Matchers.is("injinj\n")
         );
     }
 
