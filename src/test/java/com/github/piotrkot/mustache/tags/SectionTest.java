@@ -124,6 +124,23 @@ public final class SectionTest {
     }
 
     /**
+     * Should render valid tags.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldRenderValidTags() throws Exception {
+        MatcherAssert.assertThat(
+            new Variable(
+                new SquareIndicate()
+            ).render(
+                "[[#aA0._ ]] [[/ aA0._ ]]",
+                ImmutableMap.of("aA0._", true)
+            ),
+            Matchers.is(" ")
+        );
+    }
+
+    /**
      * Tag indicate with double square parentheses.
      */
     private class SquareIndicate implements TagIndicate {
