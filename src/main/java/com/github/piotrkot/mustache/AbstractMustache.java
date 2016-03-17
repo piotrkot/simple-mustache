@@ -85,7 +85,7 @@ public abstract class AbstractMustache implements Template {
     }
 
     @Override
-    public final String supply(final Map<String, Object> pairs) {
+    public final String supply(final Map<CharSequence, Object> pairs) {
         String rendered = this.str;
         for (final Tag tag : this.tags) {
             rendered = tag.render(rendered, pairs);

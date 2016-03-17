@@ -40,5 +40,5 @@ public interface Tag {
      * @param pairs Variables.
      * @return New content.
      */
-    String render(String template, Map<String, Object> pairs);
+    String render(CharSequence template, Map<CharSequence, Object> pairs);
 }

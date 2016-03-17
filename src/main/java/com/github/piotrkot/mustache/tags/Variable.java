@@ -64,7 +64,8 @@ public final class Variable implements Tag {
     }
 
     @Override
-    public String render(final String tmpl, final Map<String, Object> pairs) {
+    public String render(final CharSequence tmpl,
+        final Map<CharSequence, Object> pairs) {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final EasyMatch matcher = new EasyMatch(
@@ -92,14 +93,14 @@ public final class Variable implements Tag {
             }
         );
         while (matcher.find()) {
-            result.append(tmpl.substring(start, matcher.start()));
+            result.append(tmpl.subSequence(start, matcher.start()));
             final String name = matcher.group(1);
             if (pairs.containsKey(name)) {
                 result.append(pairs.get(name));
             }
             start = matcher.end();
         }
-        result.append(tmpl.substring(start, tmpl.length()));
+        result.append(tmpl.subSequence(start, tmpl.length()));
         return result.toString();
     }
 

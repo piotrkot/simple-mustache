@@ -39,5 +39,5 @@ public interface Template extends TagIndicate {
      * @return Tags replaced in template according to Mustache specs.
      *  @see <a href="https://mustache.github.io/">https://mustache.github.io/</a>
      */
-    String supply(Map<String, Object> pairs);
+    String supply(Map<CharSequence, Object> pairs);
 }

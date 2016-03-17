@@ -63,12 +63,13 @@ public final class Section implements Tag {
     }
 
     @Override
-    public String render(final String tmpl, final Map<String, Object> pairs) {
+    public String render(final CharSequence tmpl,
+        final Map<CharSequence, Object> pairs) {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = this.patt.matcher(tmpl);
         while (matcher.find()) {
-            result.append(tmpl.substring(start, matcher.start()));
+            result.append(tmpl.subSequence(start, matcher.start()));
             final String name = matcher.group(1);
             final Object pair = pairs.get(name);
             final String value = matcher.group(2);
@@ -86,7 +87,7 @@ public final class Section implements Tag {
             }
             start = matcher.end();
         }
-        result.append(tmpl.substring(start, tmpl.length()));
+        result.append(tmpl.subSequence(start, tmpl.length()));
         String out = result.toString();
         if (this.patt.matcher(out).find()) {
             out = this.render(out, pairs);
