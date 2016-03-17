@@ -66,7 +66,7 @@ end up with unexpected outcome.
 Example:
 ```java
 public final class SquareMustache extends AbstractMustache {
-    Mustache(final String content) {
+    public SquareMustache(final String content) {
         super(content);
     }
     @Override

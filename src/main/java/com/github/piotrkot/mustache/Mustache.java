@@ -40,7 +40,7 @@ public final class Mustache extends AbstractMustache {
      *
      * @param content Content.
      */
-    Mustache(final String content) {
+    public Mustache(final String content) {
         super(content);
     }
     /**
@@ -49,7 +49,7 @@ public final class Mustache extends AbstractMustache {
      * @param stream Stream.
      * @throws IOException When fails.
      */
-    Mustache(final InputStream stream) throws IOException {
+    public Mustache(final InputStream stream) throws IOException {
         super(stream);
     }
     /**
@@ -58,7 +58,7 @@ public final class Mustache extends AbstractMustache {
      * @param path Path.
      * @throws IOException When fails.
      */
-    Mustache(final Path path) throws IOException {
+    public Mustache(final Path path) throws IOException {
         super(path);
     }
     @Override
