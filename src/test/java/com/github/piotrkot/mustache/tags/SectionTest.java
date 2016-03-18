@@ -141,6 +141,30 @@ public final class SectionTest {
     }
 
     /**
+     * Should render on new lines.
+     * @throws Exception If fails.
+     * @checkstyle MultipleStringLiterals (12 lines)
+     */
+    @Test
+    public void shouldRenderOnNewlines() throws Exception {
+        MatcherAssert.assertThat(
+            new Section(
+                new SquareIndicate()
+            ).render(
+                "[[#nl]]\n[[line]]\n[[/nl]]",
+                ImmutableMap.of(
+                    "nl",
+                    ImmutableList.of(
+                        ImmutableMap.of("line", "1-line"),
+                        ImmutableMap.of("line", "2-line")
+                    )
+                )
+            ),
+            Matchers.is("\n1-line\n\n2-line\n")
+        );
+    }
+
+    /**
      * Tag indicate with double square parentheses.
      */
     private class SquareIndicate implements TagIndicate {

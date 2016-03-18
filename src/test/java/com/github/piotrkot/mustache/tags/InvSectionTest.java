@@ -136,6 +136,26 @@ public final class InvSectionTest {
     }
 
     /**
+     * Should render on new lines.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void shouldRenderOnNewlines() throws Exception {
+        MatcherAssert.assertThat(
+            new InvSection(
+                new SquareIndicate()
+            ).render(
+                "[[^nl]]\n[[line]]\n[[/nl]]",
+                ImmutableMap.of(
+                    "nl", Collections.emptyList(),
+                    "line", "1-line"
+                )
+            ),
+            Matchers.is("\n1-line\n")
+        );
+    }
+
+    /**
      * Tag indicate with double square parentheses.
      */
     private class SquareIndicate implements TagIndicate {

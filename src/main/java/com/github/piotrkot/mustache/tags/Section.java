@@ -58,7 +58,8 @@ public final class Section implements Tag {
                 "%1$s\\s*#\\s*([\\w\\.]+)\\s*%2$s(.+?)%1$s\\s*/\\s*(\\1)\\s*%2$s",
                 indicate.safeStart(),
                 indicate.safeEnd()
-            )
+            ),
+            Pattern.DOTALL
         );
     }
 
