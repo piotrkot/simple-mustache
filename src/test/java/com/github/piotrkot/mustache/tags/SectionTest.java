@@ -110,16 +110,54 @@ public final class SectionTest {
                 "1 [[#o]]-X [[q]]+[[#i]]Y [[w]][[/i]] [[/o]]",
                 ImmutableMap.of(
                     "o", ImmutableList.of(
-                        ImmutableMap.of("q", "Q1"),
-                        ImmutableMap.of("q", "Q2")
-                    ),
-                    "i", ImmutableList.of(
-                        ImmutableMap.of("w", "W1"),
-                        ImmutableMap.of("w", "W2")
+                        ImmutableMap.of(
+                            "q", "Q1",
+                            "i", ImmutableList.of(
+                                ImmutableMap.of("w", "W1"),
+                                ImmutableMap.of("w", "W2")
+                            )
+                        ),
+                        ImmutableMap.of(
+                            "q", "Q2",
+                            "i", ImmutableList.of(
+                                ImmutableMap.of("w", "W3"),
+                                ImmutableMap.of("w", "W4")
+                            )
+                        )
                     )
                 )
             ),
-            Matchers.is("1 -X Q1+Y W1Y W2 -X Q2+Y W1Y W2 ")
+            Matchers.is("1 -X Q1+Y W1Y W2 -X Q2+Y W3Y W4 ")
+        );
+    }
+
+    /**
+     * Should render section nested.
+     * @throws Exception If fails.
+     * @checkstyle MultipleStringLiterals (13 lines)
+     */
+    @Test
+    public void shouldRenderSectionNested() throws Exception {
+        MatcherAssert.assertThat(
+            new Section(new SquareIndicate()).render(
+                "[[#out]][[v]][[#in]][[vv]][[/in]][[^in]]none[[/in]][[/out]]",
+                ImmutableMap.of(
+                    "out", ImmutableList.of(
+                        ImmutableMap.of(
+                            "v", "V1",
+                            "in", ImmutableList.of(
+                                ImmutableMap.of("vv", "X1"),
+                                ImmutableMap.of("vv", "X2")
+                            )
+                        ),
+                        ImmutableMap.of(
+                            "v", "V2",
+                            "in", Collections.emptyList()
+                        )
+                    )
+                )
+            ),
+            Matchers.is("V1X1X2V2none")
         );
     }
 
