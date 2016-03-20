@@ -30,8 +30,6 @@ import com.github.piotrkot.mustache.tags.Variable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -47,10 +45,6 @@ public abstract class AbstractMustache implements Template {
      * Template content.
      */
     private final transient String str;
-    /**
-     * Mustache tags.
-     */
-    private final Collection<Tag> tags;
     /**
      * Constructor.
      *
@@ -76,21 +70,16 @@ public abstract class AbstractMustache implements Template {
      */
     public AbstractMustache(final String content) {
         this.str = content;
-        this.tags = Arrays.asList(
-            new Partial(this),
-            new Section(this),
-            new InvSection(this),
-            new Variable(this)
-        );
     }
 
     @Override
     public final String supply(final Map<CharSequence, Object> pairs) {
-        String rendered = this.str;
-        for (final Tag tag : this.tags) {
-            rendered = tag.render(rendered, pairs);
-        }
-        return rendered;
+        return new Tags(
+            new Partial(this),
+            new Section(this),
+            new InvSection(this),
+            new Variable(this)
+        ).render(this.str, pairs);
     }
 
     @Override

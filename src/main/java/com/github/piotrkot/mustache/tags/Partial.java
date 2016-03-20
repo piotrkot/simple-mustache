@@ -26,11 +26,10 @@ package com.github.piotrkot.mustache.tags;
 import com.github.piotrkot.mustache.Contents;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
+import com.github.piotrkot.mustache.Tags;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +40,6 @@ import lombok.extern.slf4j.Slf4j;
  * of the partial file must be provided in pair variables with name
  * of the partial as a key. Value can be as an InputStream, Path or
  * string file cnt.
- *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
@@ -49,31 +47,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class Partial implements Tag {
     /**
-     * Mustache tags.
-     */
-    private final Collection<Tag> tags;
-    /**
      * Partial pattern.
      */
     private final transient Pattern patt;
+    /**
+     * Indicate.
+     */
+    private final TagIndicate indic;
 
     /**
      * Constructor.
-     *
      * @param indicate Indicate.
      */
     public Partial(final TagIndicate indicate) {
+        this.indic = indicate;
         this.patt = Pattern.compile(
             String.format(
                 "%s\\s*>\\s*([\\w\\.]+)\\s*%s",
                 indicate.safeStart(),
                 indicate.safeEnd()
             )
-        );
-        this.tags = Arrays.asList(
-            new Section(indicate),
-            new InvSection(indicate),
-            new Variable(indicate)
         );
     }
 
@@ -86,9 +79,8 @@ public final class Partial implements Tag {
         final Matcher matcher = this.patt.matcher(tmpl);
         while (matcher.find()) {
             result.append(tmpl.subSequence(start, matcher.start()));
-            final String name = matcher.group(1);
-            final Object value = pairs.get(name);
-            if (pairs.containsKey(name)) {
+            final Object value = pairs.get(matcher.group(1));
+            if (pairs.containsKey(matcher.group(1))) {
                 try {
                     final Contents contents;
                     if (value instanceof Path) {
@@ -98,11 +90,13 @@ public final class Partial implements Tag {
                     } else {
                         contents = new Contents(value.toString());
                     }
-                    String rendered = contents.asString();
-                    for (final Tag tag : this.tags) {
-                        rendered = tag.render(rendered, pairs);
-                    }
-                    result.append(rendered);
+                    result.append(
+                        new Tags(
+                            new Section(this.indic),
+                            new InvSection(this.indic),
+                            new Variable(this.indic)
+                        ).render(contents.asString(), pairs)
+                    );
                 } catch (final IOException ex) {
                     log.info("File {} not found", value);
                 }

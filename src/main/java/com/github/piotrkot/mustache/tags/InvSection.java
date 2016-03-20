@@ -25,6 +25,7 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
+import com.github.piotrkot.mustache.Tags;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -33,28 +34,30 @@ import java.util.regex.Pattern;
 /**
  * Inverted section tag type. Renders text once but in condition inverted to
  * section condition.
- *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
 public final class InvSection implements Tag {
     /**
-     * Variable tag.
-     */
-    private final Tag vrble;
-    /**
      * Section Regexp pattern.
      */
     private final Pattern patt;
+    /**
+     * Nested tag Regexp pattern.
+     */
+    private final Pattern nest;
+    /**
+     * Indicate.
+     */
+    private final TagIndicate indic;
 
     /**
      * Constructor.
-     *
      * @param indicate Indicate.
      */
     public InvSection(final TagIndicate indicate) {
-        this.vrble = new Variable(indicate);
+        this.indic = indicate;
         // @checkstyle LineLength (3 lines)
         this.patt = Pattern.compile(
             String.format(
@@ -64,7 +67,17 @@ public final class InvSection implements Tag {
             ),
             Pattern.DOTALL
         );
+        this.nest = Pattern.compile(
+            String.format(
+                ".*%1$s.*%2$s.*",
+                indicate.safeStart(),
+                indicate.safeEnd()
+            ),
+            Pattern.DOTALL
+        );
     }
+
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public String render(final CharSequence tmpl,
         final Map<CharSequence, Object> pairs) {
@@ -73,22 +86,28 @@ public final class InvSection implements Tag {
         final Matcher matcher = this.patt.matcher(tmpl);
         while (matcher.find()) {
             result.append(tmpl.subSequence(start, matcher.start()));
-            final String name = matcher.group(1);
-            final Object value = pairs.get(name);
-            if (pairs.containsKey(name)
-                && value.toString().equals(Boolean.FALSE.toString())) {
-                result.append(this.vrble.render(matcher.group(2), pairs));
-            } else if (pairs.containsKey(name) && value instanceof Collection
-                && ((Collection) value).isEmpty()) {
-                result.append(this.vrble.render(matcher.group(2), pairs));
+            final boolean contains = pairs.containsKey(matcher.group(1));
+            final String content = matcher.group(2);
+            final Object value = pairs.getOrDefault(matcher.group(1), "");
+            final boolean nested = this.nest.matcher(content).find();
+            final boolean allowed = value instanceof Collection
+                && ((Collection) value).isEmpty()
+                || value.toString().equals(Boolean.FALSE.toString());
+            if (contains && allowed && nested) {
+                result.append(
+                    new Tags(
+                        new Partial(this.indic),
+                        new Section(this.indic),
+                        new InvSection(this.indic),
+                        new Variable(this.indic)
+                    ).render(matcher.group(2), pairs)
+                );
+            } else if (contains && allowed) {
+                result.append(content);
             }
             start = matcher.end();
         }
         result.append(tmpl.subSequence(start, tmpl.length()));
-        String out = result.toString();
-        if (this.patt.matcher(out).find()) {
-            out = this.render(out, pairs);
-        }
-        return out;
+        return result.toString();
     }
 }
