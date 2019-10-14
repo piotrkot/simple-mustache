@@ -26,13 +26,14 @@ package com.github.piotrkot.mustache.tags;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
 import com.github.piotrkot.mustache.Tags;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.cactoos.list.ListOf;
+import org.cactoos.map.MapOf;
 
 /**
  * Section tag type. Renders block of text multiple times.
@@ -45,10 +46,12 @@ public final class Section implements Tag {
      * Section Regexp pattern.
      */
     private final Pattern patt;
+
     /**
      * Nested tag Regexp pattern.
      */
     private final Pattern nest;
+
     /**
      * Indicate.
      */
@@ -93,7 +96,7 @@ public final class Section implements Tag {
             final boolean contains = pairs.containsKey(name);
             final Object value = pairs.getOrDefault(matcher.group(1), "");
             final boolean nested = this.nest.matcher(content).find();
-            final Collection<Map> maps = Section.maps(value);
+            final Iterable<Map> maps = Section.maps(value);
             if (contains && nested) {
                 for (final Map map : maps) {
                     result.append(
@@ -134,16 +137,17 @@ public final class Section implements Tag {
      * @param value Object value.
      * @return Extracted collection of maps.
      */
-    private static Collection<Map> maps(final Object value) {
-        Collection<Map> maps = new ArrayList<>(0);
-        if (value.toString().equals(Boolean.TRUE.toString())) {
-            maps = Collections.singletonList(Collections.emptyMap());
-        } else if (value instanceof Collection) {
-            for (final Object elem : (Collection) value) {
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    private static Iterable<Map> maps(final Object value) {
+        List<Map> maps = new LinkedList<>();
+        if (Boolean.parseBoolean(value.toString())) {
+            maps = new ListOf<>(new MapOf<>());
+        } else if (value instanceof Iterable) {
+            for (final Object elem : (Iterable) value) {
                 if (elem instanceof Map) {
                     maps.add((Map) elem);
                 } else {
-                    maps.add(Collections.emptyMap());
+                    maps.add(new MapOf<>());
                 }
             }
         }
