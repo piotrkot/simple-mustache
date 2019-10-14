@@ -27,6 +27,7 @@ import com.github.piotrkot.mustache.TagIndicate;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.regex.Pattern;
+import org.cactoos.iterable.IterableOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -152,6 +153,24 @@ public final class InvSectionTest {
                 )
             ),
             Matchers.is("\n1-line\n")
+        );
+    }
+
+    /**
+     * Should render iterable.
+     * @throws Exception If fails.
+     * @checkstyle MultipleStringLiterals (12 lines)
+     */
+    @Test
+    public void shouldRenderIterable() throws Exception {
+        MatcherAssert.assertThat(
+            new InvSection(
+                new SquareIndicate()
+            ).render(
+                "1 [[^IT]]X[[/IT]] 3",
+                ImmutableMap.of("IT", new IterableOf<>())
+            ),
+            Matchers.is("1 X 3")
         );
     }
 

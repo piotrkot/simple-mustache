@@ -26,10 +26,10 @@ package com.github.piotrkot.mustache.tags;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
 import com.github.piotrkot.mustache.Tags;
-import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.cactoos.scalar.LengthOf;
 
 /**
  * Inverted section tag type. Renders text once but in condition inverted to
@@ -90,8 +90,8 @@ public final class InvSection implements Tag {
             final String content = matcher.group(2);
             final Object value = pairs.getOrDefault(matcher.group(1), "");
             final boolean nested = this.nest.matcher(content).find();
-            final boolean allowed = value instanceof Collection
-                && ((Collection) value).isEmpty()
+            final boolean allowed = value instanceof Iterable
+                && new LengthOf((Iterable) value).intValue() == 0
                 || value.toString().equals(Boolean.FALSE.toString());
             if (contains && allowed && nested) {
                 result.append(

@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.regex.Pattern;
+import org.cactoos.iterable.IterableOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -199,6 +200,24 @@ public final class SectionTest {
                 )
             ),
             Matchers.is("\n1-line\n\n2-line\n")
+        );
+    }
+
+    /**
+     * Should render iterable.
+     * @throws Exception If fails.
+     * @checkstyle MultipleStringLiterals (12 lines)
+     */
+    @Test
+    public void shouldRenderIterable() throws Exception {
+        MatcherAssert.assertThat(
+            new Section(
+                new SquareIndicate()
+            ).render(
+                "1 [[#IT]]X [[/IT]]3",
+                ImmutableMap.of("IT", new IterableOf<>("aaa", "bbb"))
+            ),
+            Matchers.is("1 X X 3")
         );
     }
 
