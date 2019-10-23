@@ -23,14 +23,10 @@
  */
 package com.github.piotrkot.mustache;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
+import org.cactoos.text.TextOf;
 
 /**
  * File contents.
@@ -50,15 +46,7 @@ public final class Contents {
      * @throws IOException When fails.
      */
     public Contents(final InputStream stream) throws IOException {
-        this(
-            new BufferedReader(
-                new InputStreamReader(stream, StandardCharsets.UTF_8)
-            ).lines().collect(
-                Collectors.joining(
-                    System.lineSeparator(), "", System.lineSeparator()
-                )
-            )
-        );
+        this(new TextOf(stream).asString());
     }
 
     /**
@@ -67,14 +55,7 @@ public final class Contents {
      * @throws IOException When fails.
      */
     public Contents(final Path path) throws IOException {
-        this(
-            Files.lines(path, StandardCharsets.UTF_8)
-                .collect(
-                    Collectors.joining(
-                        System.lineSeparator(), "", System.lineSeparator()
-                    )
-                )
-        );
+        this(new TextOf(path).asString());
     }
 
     /**

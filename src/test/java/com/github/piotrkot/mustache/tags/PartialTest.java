@@ -78,7 +78,7 @@ public final class PartialTest {
                     new ByteArrayInputStream("aaa".getBytes())
                 )
             ),
-            Matchers.is("A aaa\n B")
+            Matchers.is("A aaa B")
         );
     }
 
