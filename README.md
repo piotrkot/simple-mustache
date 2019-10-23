@@ -89,6 +89,15 @@ including dot (`.`).
 
 Within tags spaces are allowed as long as they do not split the tag names.
 
+To get started, add dependency to your project:
+```xml
+<dependency>
+    <groupId>com.github.piotrkot</groupId>
+    <artifactId>mustache</artifactId>
+    <version>1.2</version>
+</dependency>
+```
+
 Feel free to fork me on GitHub, report bugs or post comments.
 
 For Pull Requests, please run `mvn clean package -Pqulice`, first.

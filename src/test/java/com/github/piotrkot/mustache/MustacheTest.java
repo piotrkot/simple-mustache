@@ -64,7 +64,7 @@ public final class MustacheTest {
         MatcherAssert.assertThat(
             new Mustache(new ByteArrayInputStream("1 {{b}}".getBytes()))
                 .supply(ImmutableMap.of("b", "B")),
-            Matchers.is("1 B\n")
+            Matchers.is("1 B")
         );
     }
 
@@ -101,7 +101,7 @@ public final class MustacheTest {
                     "x", ImmutableList.of("one", "two")
                 )
             ),
-            Matchers.is("injinj\n")
+            Matchers.is("injinj")
         );
     }
 }
