@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -27,7 +27,6 @@ import com.github.piotrkot.mustache.tags.InvSection;
 import com.github.piotrkot.mustache.tags.Partial;
 import com.github.piotrkot.mustache.tags.Section;
 import com.github.piotrkot.mustache.tags.Variable;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Map;
@@ -36,8 +35,6 @@ import java.util.regex.Pattern;
 /**
  * Mustache template.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public abstract class AbstractMustache implements Template {
@@ -45,24 +42,27 @@ public abstract class AbstractMustache implements Template {
      * Template content.
      */
     private final transient String str;
+
     /**
      * Constructor.
      *
      * @param stream Template stream.
-     * @throws IOException When fails.
+     * @throws Exception When fails.
      */
-    public AbstractMustache(final InputStream stream) throws IOException {
+    public AbstractMustache(final InputStream stream) throws Exception {
         this(new Contents(stream).asString());
     }
+
     /**
      * Constructor.
      *
      * @param path Template path.
-     * @throws IOException When fails.
+     * @throws Exception When fails.
      */
-    public AbstractMustache(final Path path) throws IOException {
+    public AbstractMustache(final Path path) throws Exception {
         this(new Contents(path).asString());
     }
+
     /**
      * Constructor.
      *
@@ -73,7 +73,7 @@ public abstract class AbstractMustache implements Template {
     }
 
     @Override
-    public final String supply(final Map<CharSequence, Object> pairs) {
+    public final String supply(final Map<CharSequence, Object> pairs) throws Exception {
         return new Tags(
             new Partial(this),
             new Section(this),

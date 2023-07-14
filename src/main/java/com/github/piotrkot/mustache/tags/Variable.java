@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -33,8 +33,6 @@ import java.util.regex.Pattern;
 /**
  * Variable template tag. Basic string replacement.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public final class Variable implements Tag {
@@ -42,6 +40,7 @@ public final class Variable implements Tag {
      * Variable pattern.
      */
     private final transient Pattern patt;
+
     /**
      * Indicate.
      */
@@ -106,6 +105,7 @@ public final class Variable implements Tag {
 
     /**
      * Count of pattern matched.
+     * @since 1.0
      */
     class PatternCount {
         /**

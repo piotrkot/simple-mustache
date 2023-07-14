@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -23,15 +23,12 @@
  */
 package com.github.piotrkot.mustache;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
 /**
  * Typical mustache template.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public final class Mustache extends AbstractMustache {
@@ -43,28 +40,32 @@ public final class Mustache extends AbstractMustache {
     public Mustache(final String content) {
         super(content);
     }
+
     /**
      * Constructor.
      *
      * @param stream Stream.
-     * @throws IOException When fails.
+     * @throws Exception When fails.
      */
-    public Mustache(final InputStream stream) throws IOException {
+    public Mustache(final InputStream stream) throws Exception {
         super(stream);
     }
+
     /**
      * Constructor.
      *
      * @param path Path.
-     * @throws IOException When fails.
+     * @throws Exception When fails.
      */
-    public Mustache(final Path path) throws IOException {
+    public Mustache(final Path path) throws Exception {
         super(path);
     }
+
     @Override
     public String start() {
         return "{{";
     }
+
     @Override
     public String end() {
         return "}}";

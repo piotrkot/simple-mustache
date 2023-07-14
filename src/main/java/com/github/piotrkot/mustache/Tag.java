@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -28,8 +28,6 @@ import java.util.Map;
 /**
  * Text tag.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public interface Tag {
@@ -39,6 +37,8 @@ public interface Tag {
      * @param template Template content.
      * @param pairs Variables.
      * @return New content.
+     * @throws Exception When fails.
      */
-    String render(CharSequence template, Map<CharSequence, Object> pairs);
+    String render(CharSequence template, Map<CharSequence, Object> pairs)
+        throws Exception;
 }

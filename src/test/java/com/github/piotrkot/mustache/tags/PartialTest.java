@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -32,21 +32,19 @@ import java.util.Collections;
 import java.util.regex.Pattern;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test to Partial.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
-public final class PartialTest {
+final class PartialTest {
     /**
      * Should render partial.
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderWithPartial() throws Exception {
+    void shouldRenderWithPartial() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
                 new SquareIndicate()
@@ -65,7 +63,7 @@ public final class PartialTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderWithPartialStream() throws Exception {
+    void shouldRenderWithPartialStream() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
                 new SquareIndicate()
@@ -87,7 +85,7 @@ public final class PartialTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderWithPartialPath() throws Exception {
+    void shouldRenderWithPartialPath() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
                 new SquareIndicate()
@@ -113,7 +111,7 @@ public final class PartialTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderWithPartialSequence() throws Exception {
+    void shouldRenderWithPartialSequence() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
                 new SquareIndicate()
@@ -137,7 +135,7 @@ public final class PartialTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderValidTags() throws Exception {
+    void shouldRenderValidTags() throws Exception {
         MatcherAssert.assertThat(
             new Partial(
                 new SquareIndicate()
@@ -151,6 +149,7 @@ public final class PartialTest {
 
     /**
      * Tag indicate with double square parentheses.
+     * @since 1.0
      */
     private class SquareIndicate implements TagIndicate {
         @Override

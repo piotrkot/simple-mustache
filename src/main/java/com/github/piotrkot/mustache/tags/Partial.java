@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -40,8 +40,6 @@ import lombok.extern.slf4j.Slf4j;
  * of the partial file must be provided in pair variables with name
  * of the partial as a key. Value can be as an InputStream, Path or
  * string file cnt.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 @Slf4j
@@ -50,6 +48,7 @@ public final class Partial implements Tag {
      * Partial pattern.
      */
     private final transient Pattern patt;
+
     /**
      * Indicate.
      */
@@ -73,7 +72,7 @@ public final class Partial implements Tag {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public String render(final CharSequence tmpl,
-        final Map<CharSequence, Object> pairs) {
+        final Map<CharSequence, Object> pairs) throws Exception {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = this.patt.matcher(tmpl);

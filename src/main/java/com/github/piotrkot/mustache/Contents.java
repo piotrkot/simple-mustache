@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -23,15 +23,12 @@
  */
 package com.github.piotrkot.mustache;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import org.cactoos.text.TextOf;
 
 /**
  * File contents.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public final class Contents {
@@ -43,18 +40,18 @@ public final class Contents {
     /**
      * Constructor.
      * @param stream Input stream.
-     * @throws IOException When fails.
+     * @throws Exception When fails.
      */
-    public Contents(final InputStream stream) throws IOException {
+    public Contents(final InputStream stream) throws Exception {
         this(new TextOf(stream).asString());
     }
 
     /**
      * Constructor.
      * @param path File path.
-     * @throws IOException When fails.
+     * @throws Exception When fails.
      */
-    public Contents(final Path path) throws IOException {
+    public Contents(final Path path) throws Exception {
         this(new TextOf(path).asString());
     }
 

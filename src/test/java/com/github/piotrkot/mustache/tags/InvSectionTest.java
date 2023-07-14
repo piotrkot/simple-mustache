@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -30,23 +30,21 @@ import java.util.regex.Pattern;
 import org.cactoos.iterable.IterableOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for Inverted section.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
-public final class InvSectionTest {
+final class InvSectionTest {
     /**
      * Should render inverted section.
      *
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderInvSection() throws Exception {
+    void shouldRenderInvSection() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(
                 new SquareIndicate()
@@ -64,7 +62,7 @@ public final class InvSectionTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderInvSectionWithVariable() throws Exception {
+    void shouldRenderInvSectionWithVariable() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
                 "1 [[^a]]X [[x]][[/a]] [[y]][[^c]]W[[/c]]",
@@ -84,7 +82,7 @@ public final class InvSectionTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldNotRenderInvSection() throws Exception {
+    void shouldNotRenderInvSection() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
                 "[[^A]]A[[/A]][[^B]]B[[/B]][[^C]]C[[/C]][[^D]]D[[/D]]",
@@ -104,7 +102,7 @@ public final class InvSectionTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderInvSectionWithSubsection() throws Exception {
+    void shouldRenderInvSectionWithSubsection() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
                 "1 [[^o]]-X [[q]][[^i]]Y [[w]][[/i]][[/o]]",
@@ -124,7 +122,7 @@ public final class InvSectionTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderValidTags() throws Exception {
+    void shouldRenderValidTags() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(
                 new SquareIndicate()
@@ -141,7 +139,7 @@ public final class InvSectionTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderOnNewlines() throws Exception {
+    void shouldRenderOnNewlines() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(
                 new SquareIndicate()
@@ -162,7 +160,7 @@ public final class InvSectionTest {
      * @checkstyle MultipleStringLiterals (12 lines)
      */
     @Test
-    public void shouldRenderIterable() throws Exception {
+    void shouldRenderIterable() throws Exception {
         MatcherAssert.assertThat(
             new InvSection(
                 new SquareIndicate()
@@ -176,6 +174,7 @@ public final class InvSectionTest {
 
     /**
      * Tag indicate with double square parentheses.
+     * @since 1.0
      */
     private class SquareIndicate implements TagIndicate {
         @Override
