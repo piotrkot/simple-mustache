@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -30,16 +30,14 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for Mustache class.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
-public final class MustacheTest {
+final class MustacheTest {
 
     /**
      * Should supply with pairs.
@@ -47,7 +45,7 @@ public final class MustacheTest {
      * @throws Exception When fails.
      */
     @Test
-    public void shouldSupply() throws Exception {
+    void shouldSupply() throws Exception {
         MatcherAssert.assertThat(
             new Mustache("1 {{a}}").supply(ImmutableMap.of("a", "A")),
             Matchers.is("1 A")
@@ -60,7 +58,7 @@ public final class MustacheTest {
      * @throws Exception When fails.
      */
     @Test
-    public void shouldSupplyFromStream() throws Exception {
+    void shouldSupplyFromStream() throws Exception {
         MatcherAssert.assertThat(
             new Mustache(new ByteArrayInputStream("1 {{b}}".getBytes()))
                 .supply(ImmutableMap.of("b", "B")),
@@ -74,7 +72,7 @@ public final class MustacheTest {
      * @throws Exception When fails.
      */
     @Test
-    public void shouldSupplyFromPath() throws Exception {
+    void shouldSupplyFromPath() throws Exception {
         MatcherAssert.assertThat(
             new Mustache(
                 Paths.get(
@@ -91,7 +89,7 @@ public final class MustacheTest {
      * @throws Exception When fails.
      */
     @Test
-    public void shouldSupplyPartialInSection() throws Exception {
+    void shouldSupplyPartialInSection() throws Exception {
         MatcherAssert.assertThat(
             new Mustache(
                 new ByteArrayInputStream("{{#x}}{{>y}}{{/x}}".getBytes())

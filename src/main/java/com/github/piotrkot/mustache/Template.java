@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -28,8 +28,6 @@ import java.util.Map;
 /**
  * Template.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public interface Template extends TagIndicate {
@@ -37,7 +35,8 @@ public interface Template extends TagIndicate {
      * Supply template with pairs which replace template tags.
      * @param pairs Pairs.
      * @return Tags replaced in template according to Mustache specs.
-     *  @see <a href="https://mustache.github.io/">https://mustache.github.io/</a>
+     * @throws Exception When fails.
+     * @see <a href="https://mustache.github.io/">https://mustache.github.io/</a>
      */
-    String supply(Map<CharSequence, Object> pairs);
+    String supply(Map<CharSequence, Object> pairs) throws Exception;
 }

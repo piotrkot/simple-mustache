@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -26,8 +26,6 @@ package com.github.piotrkot.mustache;
 /**
  * Tag indicate.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public interface TagIndicate {
@@ -37,6 +35,7 @@ public interface TagIndicate {
      * @see java.util.regex.Pattern#quote(String)
      */
     String safeStart();
+
     /**
      * Regex safe string that ends the tag.
      * @return Code string.

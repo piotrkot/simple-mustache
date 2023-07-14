@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -28,22 +28,20 @@ import com.google.common.collect.ImmutableMap;
 import java.util.regex.Pattern;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for Variable.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
-public final class VariableTest {
+final class VariableTest {
 
     /**
      * Should render variable.
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderVariable() throws Exception {
+    void shouldRenderVariable() throws Exception {
         MatcherAssert.assertThat(
             new Variable(
                 new SquareIndicate()
@@ -61,7 +59,7 @@ public final class VariableTest {
      * @checkstyle MultipleStringLiterals (8 lines)
      */
     @Test
-    public void shouldNotRenderVariableInside() throws Exception {
+    void shouldNotRenderVariableInside() throws Exception {
         MatcherAssert.assertThat(
             new Variable(
                 new SquareIndicate()
@@ -81,7 +79,7 @@ public final class VariableTest {
      * @checkstyle MultipleStringLiterals (8 lines)
      */
     @Test
-    public void shouldNotRenderVariableInsideNested() throws Exception {
+    void shouldNotRenderVariableInsideNested() throws Exception {
         MatcherAssert.assertThat(
             new Variable(
                 new SquareIndicate()
@@ -98,7 +96,7 @@ public final class VariableTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderValidTags() throws Exception {
+    void shouldRenderValidTags() throws Exception {
         MatcherAssert.assertThat(
             new Variable(
                 new SquareIndicate()
@@ -112,6 +110,7 @@ public final class VariableTest {
 
     /**
      * Tag indicate with double square parentheses.
+     * @since 1.0
      */
     private class SquareIndicate implements TagIndicate {
         @Override

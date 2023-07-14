@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -30,8 +30,6 @@ import java.util.regex.Pattern;
 /**
  * Match which can use function applied on input for pattern search. This is
  * to simplify regex creation.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public final class EasyMatch {
@@ -39,10 +37,12 @@ public final class EasyMatch {
      * Matcher.
      */
     private final Matcher mtchr;
+
     /**
      * Input against the pattern.
      */
     private final CharSequence inpt;
+
     /**
      * Function applied on inpt.
      */
@@ -105,12 +105,14 @@ public final class EasyMatch {
 
     /**
      * Context of the match.
+     * @since 1.0
      */
     public final class Context {
         /**
          * Input sequence.
          */
         private final CharSequence inpt;
+
         /**
          * Match of the pattern.
          */

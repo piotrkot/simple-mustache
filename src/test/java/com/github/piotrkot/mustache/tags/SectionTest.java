@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -31,21 +31,19 @@ import java.util.regex.Pattern;
 import org.cactoos.iterable.IterableOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for Section.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
-public final class SectionTest {
+final class SectionTest {
     /**
      * Should render section.
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderSection() throws Exception {
+    void shouldRenderSection() throws Exception {
         MatcherAssert.assertThat(
             new Section(
                 new SquareIndicate()
@@ -56,12 +54,13 @@ public final class SectionTest {
             Matchers.is("1 X YY")
         );
     }
+
     /**
      * Should not render section.
      * @throws Exception If fails.
      */
     @Test
-    public void shouldNotRenderSection() throws Exception {
+    void shouldNotRenderSection() throws Exception {
         MatcherAssert.assertThat(
             new Section(
                 new SquareIndicate()
@@ -83,7 +82,7 @@ public final class SectionTest {
      * @checkstyle MultipleStringLiterals (10 lines)
      */
     @Test
-    public void shouldRenderSectionWithVariable() throws Exception {
+    void shouldRenderSectionWithVariable() throws Exception {
         MatcherAssert.assertThat(
             new Section(new SquareIndicate()).render(
                 "1 [[#a]]X [[x]][[/a]] [[#b]][[y]] [[/b]]",
@@ -105,7 +104,7 @@ public final class SectionTest {
      * @checkstyle MultipleStringLiterals (13 lines)
      */
     @Test
-    public void shouldRenderSectionWithSubsection() throws Exception {
+    void shouldRenderSectionWithSubsection() throws Exception {
         MatcherAssert.assertThat(
             new Section(new SquareIndicate()).render(
                 "1 [[#o]]-X [[q]]+[[#i]]Y [[w]][[/i]] [[/o]]",
@@ -138,7 +137,7 @@ public final class SectionTest {
      * @checkstyle MultipleStringLiterals (13 lines)
      */
     @Test
-    public void shouldRenderSectionNested() throws Exception {
+    void shouldRenderSectionNested() throws Exception {
         MatcherAssert.assertThat(
             new Section(new SquareIndicate()).render(
                 "[[#out]][[v]][[#in]][[vv]][[/in]][[^in]]none[[/in]][[/out]]",
@@ -167,7 +166,7 @@ public final class SectionTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldRenderValidTags() throws Exception {
+    void shouldRenderValidTags() throws Exception {
         MatcherAssert.assertThat(
             new Section(
                 new SquareIndicate()
@@ -185,7 +184,7 @@ public final class SectionTest {
      * @checkstyle MultipleStringLiterals (12 lines)
      */
     @Test
-    public void shouldRenderOnNewlines() throws Exception {
+    void shouldRenderOnNewlines() throws Exception {
         MatcherAssert.assertThat(
             new Section(
                 new SquareIndicate()
@@ -209,7 +208,7 @@ public final class SectionTest {
      * @checkstyle MultipleStringLiterals (12 lines)
      */
     @Test
-    public void shouldRenderIterable() throws Exception {
+    void shouldRenderIterable() throws Exception {
         MatcherAssert.assertThat(
             new Section(
                 new SquareIndicate()
@@ -223,6 +222,7 @@ public final class SectionTest {
 
     /**
      * Tag indicate with double square parentheses.
+     * @since 1.0
      */
     private class SquareIndicate implements TagIndicate {
         @Override

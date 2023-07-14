@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -26,29 +26,29 @@ package com.github.piotrkot.mustache;
 import java.nio.file.Paths;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for Contents class.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
-public final class ContentsTest {
+final class ContentsTest {
     /**
      * Expected content.
      */
     private static final String CONTENT = "head1\nhead2\n";
+
     /**
      * Resource to read.
      */
     private static final String RESOURCE = "/prtl.mustache";
+
     /**
      * Should read stream. For safety check if can read twice.
      * @throws Exception If fails.
      */
     @Test
-    public void shouldReadStream() throws Exception {
+    void shouldReadStream() throws Exception {
         MatcherAssert.assertThat(
             new Contents(
                 this.getClass().getResourceAsStream(ContentsTest.RESOURCE)
@@ -62,12 +62,13 @@ public final class ContentsTest {
             Matchers.is(ContentsTest.CONTENT)
         );
     }
+
     /**
      * Should read string.
      * @throws Exception If fails.
      */
     @Test
-    public void shouldReadString() throws Exception {
+    void shouldReadString() throws Exception {
         MatcherAssert.assertThat(
             new Contents(ContentsTest.CONTENT).asString(),
             Matchers.is(ContentsTest.CONTENT)
@@ -79,7 +80,7 @@ public final class ContentsTest {
      * @throws Exception If fails.
      */
     @Test
-    public void shouldReadPath() throws Exception {
+    void shouldReadPath() throws Exception {
         MatcherAssert.assertThat(
             new Contents(
                 Paths.get(

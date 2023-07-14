@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -34,8 +34,6 @@ import org.cactoos.scalar.LengthOf;
 /**
  * Inverted section tag type. Renders text once but in condition inverted to
  * section condition.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public final class InvSection implements Tag {
@@ -43,10 +41,12 @@ public final class InvSection implements Tag {
      * Section Regexp pattern.
      */
     private final Pattern patt;
+
     /**
      * Nested tag Regexp pattern.
      */
     private final Pattern nest;
+
     /**
      * Indicate.
      */
@@ -80,7 +80,7 @@ public final class InvSection implements Tag {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public String render(final CharSequence tmpl,
-        final Map<CharSequence, Object> pairs) {
+        final Map<CharSequence, Object> pairs) throws Exception {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = this.patt.matcher(tmpl);
@@ -91,7 +91,7 @@ public final class InvSection implements Tag {
             final Object value = pairs.getOrDefault(matcher.group(1), "");
             final boolean nested = this.nest.matcher(content).find();
             final boolean allowed = value instanceof Iterable
-                && new LengthOf((Iterable) value).intValue() == 0
+                && new LengthOf((Iterable) value).value() == 0
                 || value.toString().equals(Boolean.FALSE.toString());
             if (contains && allowed && nested) {
                 result.append(

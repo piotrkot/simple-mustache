@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -37,8 +37,6 @@ import org.cactoos.map.MapOf;
 
 /**
  * Section tag type. Renders block of text multiple times.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public final class Section implements Tag {
@@ -85,7 +83,7 @@ public final class Section implements Tag {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public String render(final CharSequence tmpl,
-        final Map<CharSequence, Object> pairs) {
+        final Map<CharSequence, Object> pairs) throws Exception {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = this.patt.matcher(tmpl);

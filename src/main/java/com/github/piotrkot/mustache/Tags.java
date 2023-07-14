@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 piotrkot
@@ -27,8 +27,6 @@ import java.util.Map;
 
 /**
  * Group of tags that can together render a content.
- * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
- * @version $Id$
  * @since 1.0
  */
 public final class Tags implements Tag {
@@ -42,12 +40,12 @@ public final class Tags implements Tag {
      * @param group Group of tags.
      */
     public Tags(final Tag... group) {
-        this.grp = group;
+        this.grp = group.clone();
     }
 
     @Override
     public String render(final CharSequence template,
-        final Map<CharSequence, Object> pairs) {
+        final Map<CharSequence, Object> pairs) throws Exception {
         String rendered = template.toString();
         for (final Tag tag : this.grp) {
             rendered = tag.render(rendered, pairs);
