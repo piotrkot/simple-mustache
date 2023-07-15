@@ -94,7 +94,7 @@ To get started, add dependency to your project:
 <dependency>
     <groupId>com.github.piotrkot</groupId>
     <artifactId>mustache</artifactId>
-    <version>1.3</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
