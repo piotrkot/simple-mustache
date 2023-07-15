@@ -23,11 +23,12 @@
  */
 package com.github.piotrkot.mustache;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import java.io.ByteArrayInputStream;
 import java.nio.file.Paths;
 import java.util.Collections;
+import org.cactoos.list.ListOf;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ final class MustacheTest {
     @Test
     void shouldSupply() throws Exception {
         MatcherAssert.assertThat(
-            new Mustache("1 {{a}}").supply(ImmutableMap.of("a", "A")),
+            new Mustache("1 {{a}}").supply(new MapOf<>("a", "A")),
             Matchers.is("1 A")
         );
     }
@@ -61,7 +62,7 @@ final class MustacheTest {
     void shouldSupplyFromStream() throws Exception {
         MatcherAssert.assertThat(
             new Mustache(new ByteArrayInputStream("1 {{b}}".getBytes()))
-                .supply(ImmutableMap.of("b", "B")),
+                .supply(new MapOf<>("b", "B")),
             Matchers.is("1 B")
         );
     }
@@ -94,9 +95,9 @@ final class MustacheTest {
             new Mustache(
                 new ByteArrayInputStream("{{#x}}{{>y}}{{/x}}".getBytes())
             ).supply(
-                ImmutableMap.of(
-                    "y", "inj",
-                    "x", ImmutableList.of("one", "two")
+                new MapOf<CharSequence, Object>(
+                    new MapEntry<>("y", "inj"),
+                    new MapEntry<>("x", new ListOf<>("one", "two"))
                 )
             ),
             Matchers.is("injinj")

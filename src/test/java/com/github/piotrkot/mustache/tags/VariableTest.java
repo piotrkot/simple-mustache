@@ -24,8 +24,9 @@
 package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.TagIndicate;
-import com.google.common.collect.ImmutableMap;
 import java.util.regex.Pattern;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,11 @@ final class VariableTest {
                 new SquareIndicate()
             ).render(
                 "1 [[2]] [[3]][[4]] [[5]] [[>6]] [[#7]] [[/7]]",
-                ImmutableMap.of("2", 2, "3", "three", "4", "[[four]]")
+                new MapOf<>(
+                    new MapEntry<>("2", 2),
+                    new MapEntry<>("3", "three"),
+                    new MapEntry<>("4", "[[four]]")
+                )
             ),
             Matchers.is("1 2 three[[four]]  [[>6]] [[#7]] [[/7]]")
         );
@@ -65,7 +70,11 @@ final class VariableTest {
                 new SquareIndicate()
             ).render(
                 "[[#2]][[1]][[/2]][[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]",
-                ImmutableMap.of("1", "A", "5", "B", "6", "C")
+                new MapOf<>(
+                    new MapEntry<>("1", "A"),
+                    new MapEntry<>("5", "B"),
+                    new MapEntry<>("6", "C")
+                )
             ),
             Matchers.is(
                 "[[#2]][[1]][[/2]][[^4]][[5]][[/4]] [[#7]][[6]][[>9]][[/7]]"
@@ -85,7 +94,10 @@ final class VariableTest {
                 new SquareIndicate()
             ).render(
                 "[[#2]][[11]] [[^4]][[15]][[/4]] [[/2]]",
-                ImmutableMap.of("11", "AA", "15", "BB")
+                new MapOf<CharSequence, Object>(
+                    new MapEntry<>("11", "AA"),
+                    new MapEntry<>("15", "BB")
+                )
             ),
             Matchers.is("[[#2]][[11]] [[^4]][[15]][[/4]] [[/2]]")
         );
@@ -102,7 +114,7 @@ final class VariableTest {
                 new SquareIndicate()
             ).render(
                 "[[ aA0._ ]] ",
-                ImmutableMap.of("aA0._", "XX")
+                new MapOf<>("aA0._", "XX")
             ),
             Matchers.is("XX ")
         );
