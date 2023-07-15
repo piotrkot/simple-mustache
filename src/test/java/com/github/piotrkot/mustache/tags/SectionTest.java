@@ -24,11 +24,12 @@
 package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.TagIndicate;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.regex.Pattern;
 import org.cactoos.iterable.IterableOf;
+import org.cactoos.list.ListOf;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,10 @@ final class SectionTest {
                 new SquareIndicate()
             ).render(
                 "1 [[#2]]X[[/2]] [[#3]]Y[[/3]]",
-                ImmutableMap.of("2", true, "3", ImmutableList.of("12", "32"))
+                new MapOf<CharSequence, Object>(
+                    new MapEntry<>("2", true),
+                    new MapEntry<>("3", new ListOf<>("12", "32"))
+                )
             ),
             Matchers.is("1 X YY")
         );
@@ -66,10 +70,10 @@ final class SectionTest {
                 new SquareIndicate()
             ).render(
                 "[[#A]]X[[/A]][[#B]]Y[[/B]][[#C]]Z[[/C]][[#D]]W[[/D]]",
-                ImmutableMap.of(
-                    "A", false,
-                    "B", Collections.emptyList(),
-                    "C", 1
+                new MapOf<>(
+                    new MapEntry<>("A", false),
+                    new MapEntry<>("B", Collections.emptyList()),
+                    new MapEntry<>("C", 1)
                 )
             ),
             Matchers.is("")
@@ -86,11 +90,17 @@ final class SectionTest {
         MatcherAssert.assertThat(
             new Section(new SquareIndicate()).render(
                 "1 [[#a]]X [[x]][[/a]] [[#b]][[y]] [[/b]]",
-                ImmutableMap.of(
-                    "a", Collections.singletonList(ImmutableMap.of("x", "iks")),
-                    "b", ImmutableList.of(
-                        ImmutableMap.of("y", "y1"),
-                        ImmutableMap.of("y", "y2")
+                new MapOf<CharSequence, Object>(
+                    new MapEntry<>(
+                        "a",
+                        Collections.singletonList(new MapOf<CharSequence, Object>("x", "iks"))
+                    ),
+                    new MapEntry<>(
+                        "b",
+                        new ListOf<>(
+                            new MapOf<CharSequence, Object>("y", "y1"),
+                            new MapOf<CharSequence, Object>("y", "y2")
+                        )
                     )
                 )
             ),
@@ -108,20 +118,29 @@ final class SectionTest {
         MatcherAssert.assertThat(
             new Section(new SquareIndicate()).render(
                 "1 [[#o]]-X [[q]]+[[#i]]Y [[w]][[/i]] [[/o]]",
-                ImmutableMap.of(
-                    "o", ImmutableList.of(
-                        ImmutableMap.of(
-                            "q", "Q1",
-                            "i", ImmutableList.of(
-                                ImmutableMap.of("w", "W1"),
-                                ImmutableMap.of("w", "W2")
-                            )
-                        ),
-                        ImmutableMap.of(
-                            "q", "Q2",
-                            "i", ImmutableList.of(
-                                ImmutableMap.of("w", "W3"),
-                                ImmutableMap.of("w", "W4")
+                new MapOf<>(
+                    new MapEntry<>(
+                        "o",
+                        new ListOf<>(
+                            new MapOf<CharSequence, Object>(
+                                new MapEntry<>("q", "Q1"),
+                                new MapEntry<>(
+                                    "i",
+                                    new ListOf<>(
+                                        new MapOf<CharSequence, Object>("w", "W1"),
+                                        new MapOf<CharSequence, Object>("w", "W2")
+                                    )
+                                )
+                            ),
+                            new MapOf<CharSequence, Object>(
+                                new MapEntry<>("q", "Q2"),
+                                new MapEntry<>(
+                                    "i",
+                                    new ListOf<>(
+                                        new MapOf<CharSequence, Object>("w", "W3"),
+                                        new MapOf<CharSequence, Object>("w", "W4")
+                                    )
+                                )
                             )
                         )
                     )
@@ -141,18 +160,24 @@ final class SectionTest {
         MatcherAssert.assertThat(
             new Section(new SquareIndicate()).render(
                 "[[#out]][[v]][[#in]][[vv]][[/in]][[^in]]none[[/in]][[/out]]",
-                ImmutableMap.of(
-                    "out", ImmutableList.of(
-                        ImmutableMap.of(
-                            "v", "V1",
-                            "in", ImmutableList.of(
-                                ImmutableMap.of("vv", "X1"),
-                                ImmutableMap.of("vv", "X2")
+                new MapOf<>(
+                    new MapEntry<>(
+                        "out",
+                        new ListOf<>(
+                            new MapOf<CharSequence, Object>(
+                                new MapEntry<>("v", "V1"),
+                                new MapEntry<>(
+                                    "in",
+                                    new ListOf<>(
+                                        new MapOf<CharSequence, Object>("vv", "X1"),
+                                        new MapOf<CharSequence, Object>("vv", "X2")
+                                    )
+                                )
+                            ),
+                            new MapOf<CharSequence, Object>(
+                                new MapEntry<>("v", "V2"),
+                                new MapEntry<>("in", Collections.emptyList())
                             )
-                        ),
-                        ImmutableMap.of(
-                            "v", "V2",
-                            "in", Collections.emptyList()
                         )
                     )
                 )
@@ -172,7 +197,7 @@ final class SectionTest {
                 new SquareIndicate()
             ).render(
                 "[[ #aA0._ ]] [[ / aA0._ ]]",
-                ImmutableMap.of("aA0._", true)
+                new MapOf<>("aA0._", true)
             ),
             Matchers.is(" ")
         );
@@ -190,11 +215,13 @@ final class SectionTest {
                 new SquareIndicate()
             ).render(
                 "[[#nl]]\n[[line]]\n[[/nl]]",
-                ImmutableMap.of(
-                    "nl",
-                    ImmutableList.of(
-                        ImmutableMap.of("line", "1-line"),
-                        ImmutableMap.of("line", "2-line")
+                new MapOf<>(
+                    new MapEntry<>(
+                        "nl",
+                        new ListOf<>(
+                            new MapOf<CharSequence, Object>("line", "1-line"),
+                            new MapOf<CharSequence, Object>("line", "2-line")
+                        )
                     )
                 )
             ),
@@ -214,7 +241,7 @@ final class SectionTest {
                 new SquareIndicate()
             ).render(
                 "1 [[#IT]]X [[/IT]]3",
-                ImmutableMap.of("IT", new IterableOf<>("aaa", "bbb"))
+                new MapOf<>("IT", new IterableOf<>("aaa", "bbb"))
             ),
             Matchers.is("1 X X 3")
         );

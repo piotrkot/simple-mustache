@@ -25,11 +25,12 @@ package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.Contents;
 import com.github.piotrkot.mustache.TagIndicate;
-import com.google.common.collect.ImmutableMap;
 import java.io.ByteArrayInputStream;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.regex.Pattern;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -93,13 +94,14 @@ final class PartialTest {
                 new Contents(
                     "A [[>pth]] B [[>inv]]"
                 ).asString(),
-                ImmutableMap.of(
-                    "pth",
-                    Paths.get(
-                        this.getClass().getResource("/prtl.mustache").toURI()
+                new MapOf<CharSequence, Object>(
+                    new MapEntry<>(
+                        "pth",
+                        Paths.get(
+                            this.getClass().getResource("/prtl.mustache").toURI()
+                        )
                     ),
-                    "inv",
-                    Paths.get("willNotFind")
+                    new MapEntry<>("inv", Paths.get("willNotFind"))
                 )
             ),
             Matchers.is("A head1\nhead2\n B ")
@@ -119,11 +121,16 @@ final class PartialTest {
                 new Contents(
                     "A [[>seq]] B"
                 ).asString(),
-                ImmutableMap.of(
-                    "seq", "[[#a]][[x]][[/a]] [[^b]]D[[/b]] [[>more]] [[y]]",
-                    "a", Collections.singletonList(ImmutableMap.of("x", "X")),
-                    "b", Boolean.FALSE,
-                    "y", "Y"
+                new MapOf<>(
+                    new MapEntry<>(
+                        "seq", "[[#a]][[x]][[/a]] [[^b]]D[[/b]] [[>more]] [[y]]"
+                    ),
+                    new MapEntry<>(
+                        "a",
+                        Collections.singletonList(new MapOf<CharSequence, Object>("x", "X"))
+                    ),
+                    new MapEntry<>("b", Boolean.FALSE),
+                    new MapEntry<>("y", "Y")
                 )
             ),
             Matchers.is("A X D [[>more]] Y B")
@@ -141,7 +148,7 @@ final class PartialTest {
                 new SquareIndicate()
             ).render(
                 "[[ >  aA0._ ]] ",
-                ImmutableMap.of("aA0._", "O")
+                new MapOf<>("aA0._", "O")
             ),
             Matchers.is("O ")
         );

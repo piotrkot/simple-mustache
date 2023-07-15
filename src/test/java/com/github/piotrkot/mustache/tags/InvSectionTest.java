@@ -24,10 +24,11 @@
 package com.github.piotrkot.mustache.tags;
 
 import com.github.piotrkot.mustache.TagIndicate;
-import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.regex.Pattern;
 import org.cactoos.iterable.IterableOf;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,10 @@ final class InvSectionTest {
                 new SquareIndicate()
             ).render(
                 "1 [[^2]]X[[/2]] [[^3]]Y[[/3]]",
-                ImmutableMap.of("2", false, "3", Collections.emptyList())
+                new MapOf<CharSequence, Object>(
+                    new MapEntry<>("2", false),
+                    new MapEntry<>("3", Collections.emptyList())
+                )
             ),
             Matchers.is("1 X Y")
         );
@@ -66,10 +70,10 @@ final class InvSectionTest {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
                 "1 [[^a]]X [[x]][[/a]] [[y]][[^c]]W[[/c]]",
-                ImmutableMap.of(
-                    "a", Collections.emptyList(),
-                    "c", false,
-                    "x", "iks"
+                new MapOf<>(
+                    new MapEntry<>("a", Collections.emptyList()),
+                    new MapEntry<>("c", false),
+                    new MapEntry<>("x", "iks")
                 )
             ),
             Matchers.is("1 X iks [[y]]W")
@@ -86,10 +90,10 @@ final class InvSectionTest {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
                 "[[^A]]A[[/A]][[^B]]B[[/B]][[^C]]C[[/C]][[^D]]D[[/D]]",
-                ImmutableMap.of(
-                    "A", Collections.singleton("nonempty"),
-                    "B", true,
-                    "D", 1
+                new MapOf<>(
+                    new MapEntry<>("A", Collections.singleton("nonempty")),
+                    new MapEntry<>("B", true),
+                    new MapEntry<>("D", 1)
                 )
             ),
             Matchers.is("")
@@ -106,11 +110,11 @@ final class InvSectionTest {
         MatcherAssert.assertThat(
             new InvSection(new SquareIndicate()).render(
                 "1 [[^o]]-X [[q]][[^i]]Y [[w]][[/i]][[/o]]",
-                ImmutableMap.of(
-                    "q", "Q",
-                    "o", Collections.emptyList(),
-                    "i", Collections.emptyList(),
-                    "w", "W"
+                new MapOf<>(
+                    new MapEntry<>("q", "Q"),
+                    new MapEntry<>("o", Collections.emptyList()),
+                    new MapEntry<>("i", Collections.emptyList()),
+                    new MapEntry<>("w", "W")
                 )
             ),
             Matchers.is("1 -X QY W")
@@ -128,7 +132,7 @@ final class InvSectionTest {
                 new SquareIndicate()
             ).render(
                 "[[ ^aA0._  ]] [[ / aA0._ ]]",
-                ImmutableMap.of("aA0._", false)
+                new MapOf<>("aA0._", false)
             ),
             Matchers.is(" ")
         );
@@ -145,9 +149,9 @@ final class InvSectionTest {
                 new SquareIndicate()
             ).render(
                 "[[^nl]]\n[[line]]\n[[/nl]]",
-                ImmutableMap.of(
-                    "nl", Collections.emptyList(),
-                    "line", "1-line"
+                new MapOf<CharSequence, Object>(
+                    new MapEntry<>("nl", Collections.emptyList()),
+                    new MapEntry<>("line", "1-line")
                 )
             ),
             Matchers.is("\n1-line\n")
@@ -166,7 +170,7 @@ final class InvSectionTest {
                 new SquareIndicate()
             ).render(
                 "1 [[^IT]]X[[/IT]] 3",
-                ImmutableMap.of("IT", new IterableOf<>())
+                new MapOf<>("IT", new IterableOf<>())
             ),
             Matchers.is("1 X 3")
         );
