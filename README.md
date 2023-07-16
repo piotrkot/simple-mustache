@@ -100,4 +100,4 @@ To get started, add dependency to your project:
 
 Feel free to fork me on GitHub, report bugs or post comments.
 
-For Pull Requests, please run `mvn clean package -Pqulice`, first.
+For Pull Requests, please run `mvn clean package`, first.
