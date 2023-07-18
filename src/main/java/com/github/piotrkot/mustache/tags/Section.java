@@ -26,6 +26,7 @@ package com.github.piotrkot.mustache.tags;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
 import com.github.piotrkot.mustache.Tags;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,7 +84,7 @@ public final class Section implements Tag {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public String render(final CharSequence tmpl,
-        final Map<CharSequence, Object> pairs) throws Exception {
+        final Map<CharSequence, Object> pairs) throws IOException {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = this.patt.matcher(tmpl);

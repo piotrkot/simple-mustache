@@ -23,8 +23,10 @@
  */
 package com.github.piotrkot.mustache;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
 
 /**
@@ -40,19 +42,19 @@ public final class Contents {
     /**
      * Constructor.
      * @param stream Input stream.
-     * @throws Exception When fails.
+     * @throws IOException When fails.
      */
-    public Contents(final InputStream stream) throws Exception {
-        this(new TextOf(stream).asString());
+    public Contents(final InputStream stream) throws IOException {
+        this(new IoCheckedText(new TextOf(stream)).asString());
     }
 
     /**
      * Constructor.
      * @param path File path.
-     * @throws Exception When fails.
+     * @throws IOException When fails.
      */
-    public Contents(final Path path) throws Exception {
-        this(new TextOf(path).asString());
+    public Contents(final Path path) throws IOException {
+        this(new IoCheckedText(new TextOf(path)).asString());
     }
 
     /**

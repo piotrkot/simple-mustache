@@ -23,6 +23,7 @@
  */
 package com.github.piotrkot.mustache;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -35,8 +36,8 @@ public interface Template extends TagIndicate {
      * Supply template with pairs which replace template tags.
      * @param pairs Pairs.
      * @return Tags replaced in template according to Mustache specs.
-     * @throws Exception When fails.
+     * @throws IOException When fails.
      * @see <a href="https://mustache.github.io/">https://mustache.github.io/</a>
      */
-    String supply(Map<CharSequence, Object> pairs) throws Exception;
+    String supply(Map<CharSequence, Object> pairs) throws IOException;
 }
