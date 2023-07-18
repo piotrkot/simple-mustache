@@ -26,9 +26,11 @@ package com.github.piotrkot.mustache.tags;
 import com.github.piotrkot.mustache.Tag;
 import com.github.piotrkot.mustache.TagIndicate;
 import com.github.piotrkot.mustache.Tags;
+import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.cactoos.scalar.IoChecked;
 import org.cactoos.scalar.LengthOf;
 
 /**
@@ -80,7 +82,7 @@ public final class InvSection implements Tag {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @Override
     public String render(final CharSequence tmpl,
-        final Map<CharSequence, Object> pairs) throws Exception {
+        final Map<CharSequence, Object> pairs) throws IOException {
         final StringBuilder result = new StringBuilder();
         int start = 0;
         final Matcher matcher = this.patt.matcher(tmpl);
@@ -91,7 +93,7 @@ public final class InvSection implements Tag {
             final Object value = pairs.getOrDefault(matcher.group(1), "");
             final boolean nested = this.nest.matcher(content).find();
             final boolean allowed = value instanceof Iterable
-                && new LengthOf((Iterable) value).value() == 0
+                && new IoChecked<>(new LengthOf((Iterable) value)).value() == 0
                 || value.toString().equals(Boolean.FALSE.toString());
             if (contains && allowed && nested) {
                 result.append(

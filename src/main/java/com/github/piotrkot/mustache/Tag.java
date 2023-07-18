@@ -23,6 +23,7 @@
  */
 package com.github.piotrkot.mustache;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -37,8 +38,8 @@ public interface Tag {
      * @param template Template content.
      * @param pairs Variables.
      * @return New content.
-     * @throws Exception When fails.
+     * @throws IOException When fails.
      */
     String render(CharSequence template, Map<CharSequence, Object> pairs)
-        throws Exception;
+        throws IOException;
 }

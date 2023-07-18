@@ -23,6 +23,7 @@
  */
 package com.github.piotrkot.mustache;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -45,7 +46,7 @@ public final class Tags implements Tag {
 
     @Override
     public String render(final CharSequence template,
-        final Map<CharSequence, Object> pairs) throws Exception {
+        final Map<CharSequence, Object> pairs) throws IOException {
         String rendered = template.toString();
         for (final Tag tag : this.grp) {
             rendered = tag.render(rendered, pairs);

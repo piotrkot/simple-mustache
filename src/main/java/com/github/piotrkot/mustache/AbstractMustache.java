@@ -27,6 +27,7 @@ import com.github.piotrkot.mustache.tags.InvSection;
 import com.github.piotrkot.mustache.tags.Partial;
 import com.github.piotrkot.mustache.tags.Section;
 import com.github.piotrkot.mustache.tags.Variable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Map;
@@ -47,9 +48,9 @@ public abstract class AbstractMustache implements Template {
      * Constructor.
      *
      * @param stream Template stream.
-     * @throws Exception When fails.
+     * @throws IOException When fails.
      */
-    public AbstractMustache(final InputStream stream) throws Exception {
+    public AbstractMustache(final InputStream stream) throws IOException {
         this(new Contents(stream).asString());
     }
 
@@ -57,9 +58,9 @@ public abstract class AbstractMustache implements Template {
      * Constructor.
      *
      * @param path Template path.
-     * @throws Exception When fails.
+     * @throws IOException When fails.
      */
-    public AbstractMustache(final Path path) throws Exception {
+    public AbstractMustache(final Path path) throws IOException {
         this(new Contents(path).asString());
     }
 
@@ -73,7 +74,7 @@ public abstract class AbstractMustache implements Template {
     }
 
     @Override
-    public final String supply(final Map<CharSequence, Object> pairs) throws Exception {
+    public final String supply(final Map<CharSequence, Object> pairs) throws IOException {
         return new Tags(
             new Partial(this),
             new Section(this),
